@@ -29,6 +29,7 @@
 #ifndef __UDS_H
 # define __UDS_H
 
+#include "uds/math.h"
 #include "uds/vec.h"
 
 #endif /* !__UDS_H */
