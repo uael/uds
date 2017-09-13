@@ -30,6 +30,7 @@
 # define __UDS_H
 
 #include "uds/err.h"
+#include "uds/hash.h"
 #include "uds/math.h"
 #include "uds/vec.h"
 
