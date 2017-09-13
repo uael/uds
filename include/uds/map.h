@@ -244,30 +244,30 @@ typedef enum map_put map_put_t;
     HASHEQ_FN, malloc, realloc, free)
 
 #define I8_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, i8_t, TValue, i8cmp, TValue_CMP_FN, i8_hash, i8eq)
+  MAP_DEFINE(ID, i8_t, TValue, i8cmp, TValue_CMP_FN, i8hash, i8eq)
 
 #define U8_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, u8_t, TValue, u8cmp, TValue_CMP_FN, u8_hash, u8eq)
+  MAP_DEFINE(ID, u8_t, TValue, u8cmp, TValue_CMP_FN, u8hash, u8eq)
 
 #define I16_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, i16_t, TValue, i16cmp, TValue_CMP_FN, i16_hash, i16eq)
+  MAP_DEFINE(ID, i16_t, TValue, i16cmp, TValue_CMP_FN, i16hash, i16eq)
 
 #define U16_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, u16_t, TValue, u16cmp, TValue_CMP_FN, u16_hash, u16eq)
+  MAP_DEFINE(ID, u16_t, TValue, u16cmp, TValue_CMP_FN, u16hash, u16eq)
 
 #define I32_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, i32_t, TValue, i32cmp, TValue_CMP_FN, i32_hash, i32eq)
+  MAP_DEFINE(ID, i32_t, TValue, i32cmp, TValue_CMP_FN, i32hash, i32eq)
 
 #define U32_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, u32_t, TValue, u32cmp, TValue_CMP_FN, u32_hash, u32eq)
+  MAP_DEFINE(ID, u32_t, TValue, u32cmp, TValue_CMP_FN, u32hash, u32eq)
 
 #define I64_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, i64_t, TValue, i64cmp, TValue_CMP_FN, i64_hash, i64eq)
+  MAP_DEFINE(ID, i64_t, TValue, i64cmp, TValue_CMP_FN, i64hash, i64eq)
 
 #define U64_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, u64_t, TValue, u64cmp, TValue_CMP_FN, u64_hash, u64eq)
+  MAP_DEFINE(ID, u64_t, TValue, u64cmp, TValue_CMP_FN, u64hash, u64eq)
 
 #define STR_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, const i8_t *, TValue, strcmp, TValue_CMP_FN, str_hash, streq)
+  MAP_DEFINE(ID, const i8_t *, TValue, strcmp, TValue_CMP_FN, strhash, streq)
 
 #endif /* !__UDS_MAP_H */
