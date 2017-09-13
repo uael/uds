@@ -23,17 +23,19 @@
  * SOFTWARE.
  */
 
-/*!@file uds.h
+/*!@file uds/set.h
  * @author uael
  */
-#ifndef __UDS_H
-# define __UDS_H
+#ifndef __UDS_SET_H
+# define __UDS_SET_H
 
-#include "uds/err.h"
-#include "uds/hash.h"
-#include "uds/map.h"
-#include "uds/math.h"
-#include "uds/set.h"
-#include "uds/vec.h"
+#include <uty.h>
+#include <stdlib.h>
 
-#endif /* !__UDS_H */
+#include "err.h"
+#include "hash.h"
+#include "math.h"
+
+
+
+#endif /* !__UDS_SET_H */

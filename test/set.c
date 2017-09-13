@@ -23,17 +23,18 @@
  * SOFTWARE.
  */
 
-/*!@file uds.h
- * @author uael
- */
-#ifndef __UDS_H
-# define __UDS_H
+#include "cute.h"
 
-#include "uds/err.h"
-#include "uds/hash.h"
-#include "uds/map.h"
-#include "uds/math.h"
 #include "uds/set.h"
-#include "uds/vec.h"
 
-#endif /* !__UDS_H */
+CUTEST_DATA {
+  int dummy;
+};
+
+CUTEST_SETUP {}
+CUTEST_TEARDOWN {}
+
+int
+main(void) {
+  return 0;
+}
