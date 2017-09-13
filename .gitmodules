@@ -1,0 +1,3 @@
+[submodule "vendor/uty"]
+	path = vendor/uty
+	url = https://github.com/uael/uty.git
