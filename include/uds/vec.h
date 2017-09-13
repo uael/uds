@@ -23,12 +23,12 @@
  * SOFTWARE.
  */
 
-/*!@file uds.h
+/*!@file uds/vec.h
  * @author uael
  */
-#ifndef __UDS_H
-# define __UDS_H
+#ifndef __UDS_VEC_H
+# define __UDS_VEC_H
 
-#include "uds/vec.h"
 
-#endif /* !__UDS_H */
+
+#endif /* !__UDS_VEC_H */
