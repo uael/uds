@@ -175,7 +175,7 @@
     return true; \
   } \
   static inline u##TSizeBits##_t \
-  ID##_erase(ID##_t *restrict self, const TItem item) { \
+  ID##_erase(ID##_t *restrict self, TItem item) { \
     u##TSizeBits##_t len, i, j, n; \
     if (self->len == 0) { \
       return 0; \
@@ -199,7 +199,7 @@
     return len - self->len; \
   } \
   static inline u##TSizeBits##_t \
-  ID##_erasen(ID##_t *restrict self, const TItem item, \
+  ID##_erasen(ID##_t *restrict self, TItem item, \
     u##TSizeBits##_t n) { \
     u##TSizeBits##_t len, i, j, c; \
     if (n == 0 || self->len == 0) { \
@@ -227,7 +227,7 @@
     return len - self->len; \
   } \
   static inline bool_t \
-  ID##_eraseonce(ID##_t *restrict self, const TItem item) { \
+  ID##_eraseonce(ID##_t *restrict self, TItem item) { \
     u##TSizeBits##_t i; \
     for (i = 0; i < self->len; ++i) { \
       if (CMP_FN(item, self->buf[i]) == 0) { \
@@ -243,7 +243,7 @@
   } \
   static inline err_t \
   ID##_insert(ID##_t *restrict self, const u##TSizeBits##_t idx, \
-    const TItem item) { \
+    TItem item) { \
     err_t err; \
     if (idx > self->len) { \
       return FAILURE; \
@@ -260,12 +260,12 @@
         (size_t) (self->len++ - idx) * sizeof(TItem) \
       ); \
     } \
-    self->buf[idx] = (TItem) item; \
+    self->buf[idx] = item; \
     return SUCCESS; \
   } \
   static inline err_t \
   ID##_emplace(ID##_t *restrict self, const u##TSizeBits##_t idx, \
-    const TItem *items, const u##TSizeBits##_t n) { \
+    TItem *items, const u##TSizeBits##_t n) { \
     err_t err; \
     if (idx > self->len) { \
       return FAILURE; \
@@ -285,12 +285,12 @@
     return SUCCESS; \
   } \
   static inline err_t \
-  ID##_push(ID##_t *restrict self, const TItem item) { \
+  ID##_push(ID##_t *restrict self, TItem item) { \
     err_t err; \
     if ((err = ID##_grow(self, 1)) > 0) { \
       return err; \
     } \
-    self->buf[self->len++] = (TItem) item; \
+    self->buf[self->len++] = item; \
     return SUCCESS; \
   } \
   static inline err_t \
@@ -318,7 +318,7 @@
     return SUCCESS; \
   } \
   static inline err_t \
-  ID##_unshift(ID##_t *restrict self, const TItem item) { \
+  ID##_unshift(ID##_t *restrict self, TItem item) { \
     err_t err; \
     if ((err = ID##_grow(self, 1)) > 0) { \
       return err; \
@@ -328,7 +328,7 @@
       self->buf, \
       (size_t) self->len++ * sizeof(TItem) \
     ); \
-    self->buf[0] = (TItem) item; \
+    self->buf[0] = item; \
     return SUCCESS; \
   } \
   static inline err_t \
@@ -402,7 +402,7 @@
   VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, malloc, realloc, free)
 
 #define VEC8_DEFINE(ID, TItem, CMP_FN) \
-  VEC_DEFINE(ID, TItem, 8, i8cmp)
+  VEC_DEFINE(ID, TItem, 8, CMP_FN)
 
 #define VEC16_DEFINE(ID, TItem, CMP_FN) \
   VEC_DEFINE(ID, TItem, 16, CMP_FN)
