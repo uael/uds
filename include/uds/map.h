@@ -72,8 +72,8 @@ typedef enum map_put map_put_t;
 #define MAP_DEFINE_ALLOC(ID, TKey, TValue, TKey_CMP_FN, TValue_CMP_FN, \
   HASH_FN, HASHEQ_FN, MALLOC_FN, REALLOC_FN, FREE_FN) \
   typedef mapof(TKey, TValue) ID##_t; \
-  static inline void \
-  ID##_ctor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_ctor(ID##_t *__restrict__ self) { \
     *self = (ID##_t) { \
       .cap = 0, \
       .len = 0, \
@@ -84,23 +84,23 @@ typedef enum map_put map_put_t;
       .vals = nil, \
     }; \
   } \
-  static inline void \
-  ID##_dtor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_dtor(ID##_t *__restrict__ self) { \
     if (self && self->buckets) { \
       FREE_FN((void *)self->keys); \
       FREE_FN(self->buckets); \
       FREE_FN((void *)self->vals); \
     } \
   } \
-  static inline void \
-  ID##_clear(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_clear(ID##_t *__restrict__ self) { \
     if (self && self->buckets) { \
       memset(self->buckets, BUCKET_EMPTY, self->cap); \
       self->len = self->occupieds = 0; \
     } \
   } \
-  static inline bool_t \
-  ID##_get(const ID##_t *self, TKey key, u32_t *restrict out) { \
+  static FORCEINLINE bool_t \
+  ID##_get(const ID##_t *self, TKey key, u32_t *__restrict__ out) { \
     if (self->cap) { \
       u32_t k, i, last, mask, step; \
       step = 0; \
@@ -108,7 +108,8 @@ typedef enum map_put map_put_t;
       k = HASH_FN(key); \
       i = k & mask; \
       last = i; \
-      while (!bucket_isempty(self->buckets, i) && (bucket_isdel(self->buckets, i) || \
+      while (!bucket_isempty(self->buckets, i) && \
+        (bucket_isdel(self->buckets, i) || \
         !HASHEQ_FN(self->keys[i], key))) { \
         i = (i + (++step)) & mask; \
         if (i == last) \
@@ -121,8 +122,8 @@ typedef enum map_put map_put_t;
     } \
     return false; \
   } \
-  static inline u8_t \
-  ID##_resize(ID##_t *restrict self, u32_t ensure) { \
+  static FORCEINLINE u8_t \
+  ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
     new_buckets = nil; \
@@ -184,8 +185,8 @@ typedef enum map_put map_put_t;
     } \
     return 0; \
   } \
-  static inline map_put_t \
-  ID##_put(ID##_t *restrict self, TKey key, u32_t *restrict out) { \
+  static FORCEINLINE map_put_t \
+  ID##_put(ID##_t *__restrict__ self, TKey key, u32_t *__restrict__ out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
@@ -228,8 +229,8 @@ typedef enum map_put map_put_t;
     } \
     return 3; /* Don't touch self->keys[x] if present and not deleted */ \
   } \
-  static inline bool_t \
-  ID##_del(ID##_t *restrict self, u32_t x) { \
+  static FORCEINLINE bool_t \
+  ID##_del(ID##_t *__restrict__ self, u32_t x) { \
     if (x != self->cap && bucket_ispopulated(self->buckets, x)) { \
       bucket_set_isdel_true(self->buckets, x); \
       --self->len; \

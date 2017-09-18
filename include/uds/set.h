@@ -55,8 +55,8 @@ typedef enum set_put set_put_t;
 #define SET_DEFINE_ALLOC(ID, TItem, HASH_FN, HASHEQ_FN, \
   MALLOC_FN, REALLOC_FN, FREE_FN) \
   typedef setof(TItem) ID##_t; \
-  static inline void \
-  ID##_ctor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_ctor(ID##_t *__restrict__ self) { \
     *self = (ID##_t) { \
       .cap = 0, \
       .len = 0, \
@@ -66,22 +66,22 @@ typedef enum set_put set_put_t;
       .items = nil \
     }; \
   } \
-  static inline void \
-  ID##_dtor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_dtor(ID##_t *__restrict__ self) { \
     if (self && self->buckets) { \
       FREE_FN((void *)self->items); \
       FREE_FN(self->buckets); \
     } \
   } \
-  static inline void \
-  ID##_clear(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_clear(ID##_t *__restrict__ self) { \
     if (self && self->buckets) { \
       memset(self->buckets, BUCKET_EMPTY, self->cap); \
       self->len = self->occupieds = 0; \
     } \
   } \
-  static inline bool_t \
-  ID##_get(const ID##_t *self, TItem item, u32_t *restrict out) { \
+  static FORCEINLINE bool_t \
+  ID##_get(const ID##_t *self, TItem item, u32_t *__restrict__ out) { \
     if (self->cap) { \
       u32_t k, i, last, mask, step; \
       step = 0; \
@@ -102,8 +102,8 @@ typedef enum set_put set_put_t;
     } \
     return false; \
   } \
-  static inline u8_t \
-  ID##_resize(ID##_t *restrict self, u32_t ensure) { \
+  static FORCEINLINE u8_t \
+  ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
     new_buckets = nil; \
@@ -157,8 +157,8 @@ typedef enum set_put set_put_t;
     } \
     return 0; \
   } \
-  static inline set_put_t \
-  ID##_put(ID##_t *restrict self, TItem item, u32_t *restrict out) { \
+  static FORCEINLINE set_put_t \
+  ID##_put(ID##_t *__restrict__ self, TItem item, u32_t *__restrict__ out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
@@ -201,8 +201,8 @@ typedef enum set_put set_put_t;
     } \
     return SET_PUT_POPULATED; /* Don't touch self->items[x] if populated */ \
   } \
-  static inline bool_t \
-  ID##_del(ID##_t *restrict self, u32_t x) { \
+  static FORCEINLINE bool_t \
+  ID##_del(ID##_t *__restrict__ self, u32_t x) { \
     if (x != self->cap && bucket_ispopulated(self->buckets, x)) { \
       bucket_set_isdel_true(self->buckets, x); \
       --self->len; \

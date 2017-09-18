@@ -31,7 +31,7 @@
 
 #include <uty.h>
 
-#if HAS_BUILTIN(__builtin_popcount)
+#if __has_builtin(__builtin_popcount)
 #define ISPOW2(n) (__builtin_popcount(n) == 1)
 #else
 #define ISPOW2(n) (((n) != 0) && (((n) & (~(n) + 1)) == (n)))

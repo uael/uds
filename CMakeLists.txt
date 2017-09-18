@@ -60,7 +60,7 @@ if (EXISTS ${${PROJECT_NAME}_INCLUDE_DIR})
     ${${PROJECT_NAME}_INCLUDE_DIR})
 endif ()
 
-if (${PROJECT_NAME}_DEVEL)
+#if (${PROJECT_NAME}_DEVEL)
   if (EXISTS ${${PROJECT_NAME}_TEST_DIR})
     enable_testing()
 
@@ -73,7 +73,7 @@ if (${PROJECT_NAME}_DEVEL)
       add_test(${ctest_NAME} test_${ctest_NAME})
     endforeach ()
   endif ()
-endif ()
+#endif ()
 
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin

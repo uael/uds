@@ -5,7 +5,7 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
+ * in the Software without __restrict__ion, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
@@ -47,12 +47,12 @@
 #define VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
   FREE_FN) \
   typedef vecof(TItem, TSizeBits) ID##_t; \
-  static inline void \
-  ID##_ctor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_ctor(ID##_t *__restrict__ self) { \
     *self = (ID##_t) {.cap = 0, .len = 0, .buf = nil}; \
   } \
-  static inline void \
-  ID##_dtor(ID##_t *restrict self) { \
+  static FORCEINLINE void \
+  ID##_dtor(ID##_t *__restrict__ self) { \
     self->cap = 0; \
     self->len = 0; \
     if (self->buf) { \
@@ -60,8 +60,8 @@
       self->buf = nil; \
     } \
   } \
-  static inline err_t \
-  ID##_growth(ID##_t *restrict self, const u##TSizeBits##_t nmin) { \
+  static FORCEINLINE err_t \
+  ID##_growth(ID##_t *__restrict__ self, const u##TSizeBits##_t nmin) { \
     if (nmin > 0) { \
       if (self->cap) { \
         if (self->cap < nmin) { \
@@ -94,8 +94,8 @@
     } \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_decay(ID##_t *restrict self, const u##TSizeBits##_t nmax) { \
+  static FORCEINLINE err_t \
+  ID##_decay(ID##_t *__restrict__ self, const u##TSizeBits##_t nmax) { \
     u##TSizeBits##_t nearest_pow2; \
     nearest_pow2 = pow2_next##TSizeBits(nmax); \
     if (self->cap > nearest_pow2) { \
@@ -114,22 +114,22 @@
     } \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_grow(ID##_t *restrict self, const u##TSizeBits##_t nmem) { \
+  static FORCEINLINE err_t \
+  ID##_grow(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
     u##TSizeBits##_t u; \
     u = self->len + nmem; \
     return ID##_growth(self, (const u##TSizeBits##_t) \
       (u < self->len ? U##TSizeBits##_MAX : u)); \
   } \
-  static inline err_t \
-  ID##_shrink(ID##_t *restrict self, const u##TSizeBits##_t nmem) { \
+  static FORCEINLINE err_t \
+  ID##_shrink(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
     return ID##_decay( \
       self, \
       (const u##TSizeBits##_t) (nmem >= self->len ? 0 : self->len - nmem) \
     ); \
   } \
-  static inline err_t \
-  ID##_trim(ID##_t *restrict self) { \
+  static FORCEINLINE err_t \
+  ID##_trim(ID##_t *__restrict__ self) { \
     u##TSizeBits##_t nearest_pow2; \
     nearest_pow2 = pow2_next##TSizeBits(self->len); \
     if (self->cap > nearest_pow2) { \
@@ -141,8 +141,8 @@
     } \
     return SUCCESS; \
   } \
-  static inline bool_t \
-  ID##_remove(ID##_t *restrict self, const u##TSizeBits##_t idx) { \
+  static FORCEINLINE bool_t \
+  ID##_remove(ID##_t *__restrict__ self, const u##TSizeBits##_t idx) { \
     if (idx >= self->len) { \
       return false; \
     } \
@@ -157,8 +157,8 @@
     } \
     return true; \
   } \
-  static inline bool_t \
-  ID##_removen(ID##_t *restrict self, const u##TSizeBits##_t idx, \
+  static FORCEINLINE bool_t \
+  ID##_removen(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
     const u##TSizeBits##_t n) { \
     if (idx >= self->len) { \
       return false; \
@@ -174,8 +174,8 @@
     } \
     return true; \
   } \
-  static inline u##TSizeBits##_t \
-  ID##_erase(ID##_t *restrict self, TItem item) { \
+  static FORCEINLINE u##TSizeBits##_t \
+  ID##_erase(ID##_t *__restrict__ self, TItem item) { \
     u##TSizeBits##_t len, i, j, n; \
     if (self->len == 0) { \
       return 0; \
@@ -198,8 +198,8 @@
     } \
     return len - self->len; \
   } \
-  static inline u##TSizeBits##_t \
-  ID##_erasen(ID##_t *restrict self, TItem item, \
+  static FORCEINLINE u##TSizeBits##_t \
+  ID##_erasen(ID##_t *__restrict__ self, TItem item, \
     u##TSizeBits##_t n) { \
     u##TSizeBits##_t len, i, j, c; \
     if (n == 0 || self->len == 0) { \
@@ -226,8 +226,8 @@
     } \
     return len - self->len; \
   } \
-  static inline bool_t \
-  ID##_eraseonce(ID##_t *restrict self, TItem item) { \
+  static FORCEINLINE bool_t \
+  ID##_eraseonce(ID##_t *__restrict__ self, TItem item) { \
     u##TSizeBits##_t i; \
     for (i = 0; i < self->len; ++i) { \
       if (CMP_FN(item, self->buf[i]) == 0) { \
@@ -241,8 +241,8 @@
     } \
     return false; \
   } \
-  static inline err_t \
-  ID##_insert(ID##_t *restrict self, const u##TSizeBits##_t idx, \
+  static FORCEINLINE err_t \
+  ID##_insert(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
     TItem item) { \
     err_t err; \
     if (idx > self->len) { \
@@ -263,8 +263,8 @@
     self->buf[idx] = item; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_emplace(ID##_t *restrict self, const u##TSizeBits##_t idx, \
+  static FORCEINLINE err_t \
+  ID##_emplace(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
     TItem *items, const u##TSizeBits##_t n) { \
     err_t err; \
     if (idx > self->len) { \
@@ -284,8 +284,8 @@
     self->len += n; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_push(ID##_t *restrict self, TItem item) { \
+  static FORCEINLINE err_t \
+  ID##_push(ID##_t *__restrict__ self, TItem item) { \
     err_t err; \
     if ((err = ID##_grow(self, 1)) > 0) { \
       return err; \
@@ -293,8 +293,8 @@
     self->buf[self->len++] = item; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_pop(ID##_t *restrict self, TItem *restrict out) { \
+  static FORCEINLINE err_t \
+  ID##_pop(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
     if (self->len == 0) { \
       return FAILURE; \
     } \
@@ -304,8 +304,8 @@
     } \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_append(ID##_t *restrict self, TItem *items, const u##TSizeBits##_t n) { \
+  static FORCEINLINE err_t \
+  ID##_append(ID##_t *__restrict__ self, TItem *items, const u##TSizeBits##_t n) { \
     err_t err; \
     if (n == 0) { \
       return SUCCESS; \
@@ -317,8 +317,8 @@
     self->len += n; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_unshift(ID##_t *restrict self, TItem item) { \
+  static FORCEINLINE err_t \
+  ID##_unshift(ID##_t *__restrict__ self, TItem item) { \
     err_t err; \
     if ((err = ID##_grow(self, 1)) > 0) { \
       return err; \
@@ -331,8 +331,8 @@
     self->buf[0] = item; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_shift(ID##_t *restrict self, TItem *restrict out) { \
+  static FORCEINLINE err_t \
+  ID##_shift(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
     if (self->len == 0) { \
       return FAILURE; \
     } \
@@ -350,8 +350,8 @@
     } \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_prepend(ID##_t *restrict self, TItem *items, \
+  static FORCEINLINE err_t \
+  ID##_prepend(ID##_t *__restrict__ self, TItem *items, \
     const u##TSizeBits##_t n) { \
     err_t err; \
     if (n == 0) { \
@@ -369,8 +369,8 @@
     self->len += n; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_resize(ID##_t *restrict self, const u##TSizeBits##_t n) { \
+  static FORCEINLINE err_t \
+  ID##_resize(ID##_t *__restrict__ self, const u##TSizeBits##_t n) { \
     err_t err; \
     if ((err = ID##_growth(self, n)) > 0) { \
       return err; \
@@ -378,8 +378,8 @@
     self->len = n; \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_cpy(ID##_t *restrict self, ID##_t *restrict src) { \
+  static FORCEINLINE err_t \
+  ID##_cpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src) { \
     err_t err; \
     if ((err = ID##_growth(self, src->len)) > 0) { \
       return err; \
@@ -387,8 +387,8 @@
     memcpy(self->buf, src->buf, (size_t) (self->len = src->len)); \
     return SUCCESS; \
   } \
-  static inline err_t \
-  ID##_ncpy(ID##_t *restrict self, ID##_t *restrict src, \
+  static FORCEINLINE err_t \
+  ID##_ncpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src, \
     const u##TSizeBits##_t n) { \
     err_t err; \
     if ((err = ID##_growth(self, n)) > 0) { \
