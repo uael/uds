@@ -44,9 +44,8 @@
     TItem *buf; \
   }
 
-#define VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
+#define VEC_IMPL_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
   FREE_FN) \
-  typedef vecof(TItem, TSizeBits) ID##_t; \
   static FORCEINLINE void \
   ID##_ctor(ID##_t *__restrict__ self) { \
     *self = (ID##_t) {.cap = 0, .len = 0, .buf = nil}; \
@@ -397,6 +396,11 @@
     memcpy(self->buf, src->buf, (size_t) (self->len = n)); \
     return SUCCESS; \
   }
+
+#define VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
+  FREE_FN) \
+  typedef vecof(TItem, TSizeBits) ID##_t; \
+  VEC_IMPL_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, FREE_FN)
 
 #define VEC_DEFINE(ID, TItem, TSizeBits, CMP_FN) \
   VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, malloc, realloc, free)
