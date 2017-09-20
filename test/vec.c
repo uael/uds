@@ -106,56 +106,56 @@ CUTEST_TEARDOWN {
 }
 
 CUTEST(v8, growth) {
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, 0));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, 0));
   ASSERT_EQ(0, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_EQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, 1));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, 1));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, 2));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, 2));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP + 1));
   ASSERT_EQ(pow2_next8(VEC_MIN_CAP + 1), self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, U8_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, U8_MAX));
   ASSERT_EQ(U8_MAX, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, U8_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, U8_MAX));
   ASSERT_EQ(U8_MAX, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
   vi8_dtor(&self->vi8);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
   vi8_dtor(&self->vi8);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, U8_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, U8_MAX));
   ASSERT_EQ(U8_MAX, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
   vi8_dtor(&self->vi8);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, pow2_next8(VEC_MIN_CAP + 1)));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, pow2_next8(VEC_MIN_CAP + 1)));
   ASSERT_EQ(pow2_next8(VEC_MIN_CAP + 1), self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v8_nomem_growth(&self->v8_nomem, 1));
+  ASSERT_EQ(RET_SUCCESS, v8_nomem_growth(&self->v8_nomem, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->v8_nomem.cap);
   ASSERT_EQ(0, self->v8_nomem.len);
   ASSERT_NEQ(nil, self->v8_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v8_nomem_growth(&self->v8_nomem, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_ERRNO, v8_nomem_growth(&self->v8_nomem, VEC_MIN_CAP + 1));
   ASSERT_EQ(0, self->v8_nomem.cap);
   ASSERT_EQ(0, self->v8_nomem.len);
   ASSERT_EQ(nil, self->v8_nomem.buf);
@@ -163,56 +163,56 @@ CUTEST(v8, growth) {
 }
 
 CUTEST(v16, growth) {
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, 0));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, 0));
   ASSERT_EQ(0, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_EQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, 1));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, 1));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, 2));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, 2));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP + 1));
   ASSERT_EQ(pow2_next16(VEC_MIN_CAP + 1), self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, U16_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, U16_MAX));
   ASSERT_EQ(U16_MAX, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, U16_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, U16_MAX));
   ASSERT_EQ(U16_MAX, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
   vi16_dtor(&self->vi16);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
   vi16_dtor(&self->vi16);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, U16_MAX));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, U16_MAX));
   ASSERT_EQ(U16_MAX, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
   vi16_dtor(&self->vi16);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, pow2_next16(VEC_MIN_CAP + 1)));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, pow2_next16(VEC_MIN_CAP + 1)));
   ASSERT_EQ(pow2_next16(VEC_MIN_CAP + 1), self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v16_nomem_growth(&self->v16_nomem, 1));
+  ASSERT_EQ(RET_SUCCESS, v16_nomem_growth(&self->v16_nomem, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->v16_nomem.cap);
   ASSERT_EQ(0, self->v16_nomem.len);
   ASSERT_NEQ(nil, self->v16_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v16_nomem_growth(&self->v16_nomem, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_ERRNO, v16_nomem_growth(&self->v16_nomem, VEC_MIN_CAP + 1));
   ASSERT_EQ(0, self->v16_nomem.cap);
   ASSERT_EQ(0, self->v16_nomem.len);
   ASSERT_EQ(nil, self->v16_nomem.buf);
@@ -220,43 +220,43 @@ CUTEST(v16, growth) {
 }
 
 CUTEST(v32, growth) {
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, 0));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, 0));
   ASSERT_EQ(0, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_EQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, 1));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, 1));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, 2));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, 2));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP + 1));
   ASSERT_EQ(pow2_next32(VEC_MIN_CAP + 1), self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
   vi32_dtor(&self->vi32);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
   vi32_dtor(&self->vi32);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, pow2_next32(VEC_MIN_CAP + 1)));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, pow2_next32(VEC_MIN_CAP + 1)));
   ASSERT_EQ(pow2_next32(VEC_MIN_CAP + 1), self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v32_nomem_growth(&self->v32_nomem, 1));
+  ASSERT_EQ(RET_SUCCESS, v32_nomem_growth(&self->v32_nomem, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->v32_nomem.cap);
   ASSERT_EQ(0, self->v32_nomem.len);
   ASSERT_NEQ(nil, self->v32_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v32_nomem_growth(&self->v32_nomem, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_ERRNO, v32_nomem_growth(&self->v32_nomem, VEC_MIN_CAP + 1));
   ASSERT_EQ(0, self->v32_nomem.cap);
   ASSERT_EQ(0, self->v32_nomem.len);
   ASSERT_EQ(nil, self->v32_nomem.buf);
@@ -264,43 +264,43 @@ CUTEST(v32, growth) {
 }
 
 CUTEST(v64, growth) {
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, 0));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, 0));
   ASSERT_EQ(0, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_EQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, 1));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, 1));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, 2));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, 2));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP + 1));
   ASSERT_EQ(pow2_next64(VEC_MIN_CAP + 1), self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
   vi64_dtor(&self->vi64);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
   vi64_dtor(&self->vi64);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, pow2_next64(VEC_MIN_CAP + 1)));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, pow2_next64(VEC_MIN_CAP + 1)));
   ASSERT_EQ(pow2_next64(VEC_MIN_CAP + 1), self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v64_nomem_growth(&self->v64_nomem, 1));
+  ASSERT_EQ(RET_SUCCESS, v64_nomem_growth(&self->v64_nomem, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->v64_nomem.cap);
   ASSERT_EQ(0, self->v64_nomem.len);
   ASSERT_NEQ(nil, self->v64_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v64_nomem_growth(&self->v64_nomem, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_ERRNO, v64_nomem_growth(&self->v64_nomem, VEC_MIN_CAP + 1));
   ASSERT_EQ(0, self->v64_nomem.cap);
   ASSERT_EQ(0, self->v64_nomem.len);
   ASSERT_EQ(nil, self->v64_nomem.buf);
@@ -308,33 +308,33 @@ CUTEST(v64, growth) {
 }
 
 CUTEST(line, growth) {
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, 0));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, 0));
   ASSERT_EQ(0, self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_EQ(nil, self->line.buf);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, 1));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, 1));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, 1));
   ASSERT_EQ(VEC_MIN_CAP, self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, 2));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, 2));
   ASSERT_EQ(VEC_MIN_CAP, self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, VEC_MIN_CAP + 1));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, VEC_MIN_CAP + 1));
   ASSERT_EQ(pow2_next64(VEC_MIN_CAP + 1), self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
   line_dtor(&self->line);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
   line_dtor(&self->line);
-  ASSERT_EQ(SUCCESS, line_growth(&self->line, pow2_next64(VEC_MIN_CAP + 1)));
+  ASSERT_EQ(RET_SUCCESS, line_growth(&self->line, pow2_next64(VEC_MIN_CAP + 1)));
   ASSERT_EQ(pow2_next64(VEC_MIN_CAP + 1), self->line.cap);
   ASSERT_EQ(0, self->line.len);
   ASSERT_NEQ(nil, self->line.buf);
@@ -342,37 +342,37 @@ CUTEST(line, growth) {
 }
 
 CUTEST(v8, decay) {
-  ASSERT_EQ(SUCCESS, vi8_decay(&self->vi8, 0));
+  ASSERT_EQ(RET_SUCCESS, vi8_decay(&self->vi8, 0));
   ASSERT_EQ(0, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_EQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi8_growth(&self->vi8, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_decay(&self->vi8, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi8_decay(&self->vi8, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_decay(&self->vi8, 4));
+  ASSERT_EQ(RET_SUCCESS, vi8_decay(&self->vi8, 4));
   ASSERT_EQ(4, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_decay(&self->vi8, 2));
+  ASSERT_EQ(RET_SUCCESS, vi8_decay(&self->vi8, 2));
   ASSERT_EQ(2, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
-  ASSERT_EQ(SUCCESS, vi8_decay(&self->vi8, 4));
+  ASSERT_EQ(RET_SUCCESS, vi8_decay(&self->vi8, 4));
   ASSERT_EQ(2, self->vi8.cap);
   ASSERT_EQ(0, self->vi8.len);
   ASSERT_NEQ(nil, self->vi8.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v8_nomem_growth(&self->v8_nomem, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, v8_nomem_growth(&self->v8_nomem, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->v8_nomem.cap);
   ASSERT_EQ(0, self->v8_nomem.len);
   ASSERT_NEQ(nil, self->v8_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v8_nomem_decay(&self->v8_nomem, 4));
+  ASSERT_EQ(RET_ERRNO, v8_nomem_decay(&self->v8_nomem, 4));
   ASSERT_EQ(0, self->v8_nomem.cap);
   ASSERT_EQ(0, self->v8_nomem.len);
   ASSERT_EQ(nil, self->v8_nomem.buf);
@@ -380,37 +380,37 @@ CUTEST(v8, decay) {
 }
 
 CUTEST(v16, decay) {
-  ASSERT_EQ(SUCCESS, vi16_decay(&self->vi16, 0));
+  ASSERT_EQ(RET_SUCCESS, vi16_decay(&self->vi16, 0));
   ASSERT_EQ(0, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_EQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi16_growth(&self->vi16, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_decay(&self->vi16, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi16_decay(&self->vi16, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_decay(&self->vi16, 4));
+  ASSERT_EQ(RET_SUCCESS, vi16_decay(&self->vi16, 4));
   ASSERT_EQ(4, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_decay(&self->vi16, 2));
+  ASSERT_EQ(RET_SUCCESS, vi16_decay(&self->vi16, 2));
   ASSERT_EQ(2, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
-  ASSERT_EQ(SUCCESS, vi16_decay(&self->vi16, 4));
+  ASSERT_EQ(RET_SUCCESS, vi16_decay(&self->vi16, 4));
   ASSERT_EQ(2, self->vi16.cap);
   ASSERT_EQ(0, self->vi16.len);
   ASSERT_NEQ(nil, self->vi16.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v16_nomem_growth(&self->v16_nomem, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, v16_nomem_growth(&self->v16_nomem, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->v16_nomem.cap);
   ASSERT_EQ(0, self->v16_nomem.len);
   ASSERT_NEQ(nil, self->v16_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v16_nomem_decay(&self->v16_nomem, 4));
+  ASSERT_EQ(RET_ERRNO, v16_nomem_decay(&self->v16_nomem, 4));
   ASSERT_EQ(0, self->v16_nomem.cap);
   ASSERT_EQ(0, self->v16_nomem.len);
   ASSERT_EQ(nil, self->v16_nomem.buf);
@@ -418,37 +418,37 @@ CUTEST(v16, decay) {
 }
 
 CUTEST(v32, decay) {
-  ASSERT_EQ(SUCCESS, vi32_decay(&self->vi32, 0));
+  ASSERT_EQ(RET_SUCCESS, vi32_decay(&self->vi32, 0));
   ASSERT_EQ(0, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_EQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi32_growth(&self->vi32, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_decay(&self->vi32, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi32_decay(&self->vi32, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_decay(&self->vi32, 4));
+  ASSERT_EQ(RET_SUCCESS, vi32_decay(&self->vi32, 4));
   ASSERT_EQ(4, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_decay(&self->vi32, 2));
+  ASSERT_EQ(RET_SUCCESS, vi32_decay(&self->vi32, 2));
   ASSERT_EQ(2, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
-  ASSERT_EQ(SUCCESS, vi32_decay(&self->vi32, 4));
+  ASSERT_EQ(RET_SUCCESS, vi32_decay(&self->vi32, 4));
   ASSERT_EQ(2, self->vi32.cap);
   ASSERT_EQ(0, self->vi32.len);
   ASSERT_NEQ(nil, self->vi32.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v32_nomem_growth(&self->v32_nomem, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, v32_nomem_growth(&self->v32_nomem, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->v32_nomem.cap);
   ASSERT_EQ(0, self->v32_nomem.len);
   ASSERT_NEQ(nil, self->v32_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v32_nomem_decay(&self->v32_nomem, 4));
+  ASSERT_EQ(RET_ERRNO, v32_nomem_decay(&self->v32_nomem, 4));
   ASSERT_EQ(0, self->v32_nomem.cap);
   ASSERT_EQ(0, self->v32_nomem.len);
   ASSERT_EQ(nil, self->v32_nomem.buf);
@@ -456,37 +456,37 @@ CUTEST(v32, decay) {
 }
 
 CUTEST(v64, decay) {
-  ASSERT_EQ(SUCCESS, vi64_decay(&self->vi64, 0));
+  ASSERT_EQ(RET_SUCCESS, vi64_decay(&self->vi64, 0));
   ASSERT_EQ(0, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_EQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi64_growth(&self->vi64, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_decay(&self->vi64, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, vi64_decay(&self->vi64, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_decay(&self->vi64, 4));
+  ASSERT_EQ(RET_SUCCESS, vi64_decay(&self->vi64, 4));
   ASSERT_EQ(4, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_decay(&self->vi64, 2));
+  ASSERT_EQ(RET_SUCCESS, vi64_decay(&self->vi64, 2));
   ASSERT_EQ(2, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
-  ASSERT_EQ(SUCCESS, vi64_decay(&self->vi64, 4));
+  ASSERT_EQ(RET_SUCCESS, vi64_decay(&self->vi64, 4));
   ASSERT_EQ(2, self->vi64.cap);
   ASSERT_EQ(0, self->vi64.len);
   ASSERT_NEQ(nil, self->vi64.buf);
 
   /* No memory left tests */
-  ASSERT_EQ(SUCCESS, v64_nomem_growth(&self->v64_nomem, VEC_MIN_CAP));
+  ASSERT_EQ(RET_SUCCESS, v64_nomem_growth(&self->v64_nomem, VEC_MIN_CAP));
   ASSERT_EQ(VEC_MIN_CAP, self->v64_nomem.cap);
   ASSERT_EQ(0, self->v64_nomem.len);
   ASSERT_NEQ(nil, self->v64_nomem.buf);
-  ASSERT_EQ(ERR_NOMEM, v64_nomem_decay(&self->v64_nomem, 4));
+  ASSERT_EQ(RET_ERRNO, v64_nomem_decay(&self->v64_nomem, 4));
   ASSERT_EQ(0, self->v64_nomem.cap);
   ASSERT_EQ(0, self->v64_nomem.len);
   ASSERT_EQ(nil, self->v64_nomem.buf);

@@ -30,9 +30,9 @@
 # define __UDS_VEC_H
 
 #include <uty.h>
+#include <uerr.h>
 #include <stdlib.h>
 
-#include "err.h"
 #include "math.h"
 
 #ifndef VEC_MIN_CAP
@@ -59,7 +59,7 @@
       self->buf = nil; \
     } \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_growth(ID##_t *__restrict__ self, const u##TSizeBits##_t nmin) { \
     if (nmin > 0) { \
       if (self->cap) { \
@@ -73,7 +73,7 @@
             REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) \
             == nil) { \
             self->cap = 0; \
-            return (err_t) errno; \
+            return RET_ERRNO; \
           } \
         } \
       } else { \
@@ -87,13 +87,13 @@
         if ((self->buf = \
           (TItem *) MALLOC_FN(sizeof(TItem) * (size_t) self->cap)) == nil) { \
           self->cap = 0; \
-          return (err_t) errno; \
+          return RET_ERRNO; \
         } \
       } \
     } \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_decay(ID##_t *__restrict__ self, const u##TSizeBits##_t nmax) { \
     u##TSizeBits##_t nearest_pow2; \
     nearest_pow2 = pow2_next##TSizeBits(nmax); \
@@ -102,7 +102,7 @@
       if ((self->buf = (TItem *) \
         REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) == nil) { \
         self->cap = 0; \
-        return (err_t) errno; \
+        return RET_ERRNO; \
       } \
     } \
     if (self->len > nmax) { \
@@ -111,23 +111,23 @@
       ); \
       self->len = nmax; \
     } \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_grow(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
     u##TSizeBits##_t u; \
     u = self->len + nmem; \
     return ID##_growth(self, (const u##TSizeBits##_t) \
       (u < self->len ? U##TSizeBits##_MAX : u)); \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_shrink(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
     return ID##_decay( \
       self, \
       (const u##TSizeBits##_t) (nmem >= self->len ? 0 : self->len - nmem) \
     ); \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_trim(ID##_t *__restrict__ self) { \
     u##TSizeBits##_t nearest_pow2; \
     nearest_pow2 = pow2_next##TSizeBits(self->len); \
@@ -135,10 +135,10 @@
       self->cap = nearest_pow2; \
       if ((self->buf = (TItem *) \
         REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) == nil) { \
-        return (err_t) errno; \
+        return RET_ERRNO; \
       } \
     } \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
   static FORCEINLINE bool_t \
   ID##_remove(ID##_t *__restrict__ self, const u##TSizeBits##_t idx) { \
@@ -240,15 +240,15 @@
     } \
     return false; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_insert(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
     TItem item) { \
-    err_t err; \
+    ret_t ret; \
     if (idx > self->len) { \
-      return FAILURE; \
+      return RET_FAILURE; \
     } \
-    if ((err = ID##_grow(self, 1)) > 0) { \
-      return err; \
+    if ((ret = ID##_grow(self, 1)) > 0) { \
+      return ret; \
     } \
     if (idx == self->len) { \
       ++self->len; \
@@ -260,17 +260,17 @@
       ); \
     } \
     self->buf[idx] = item; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_emplace(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
     TItem *items, const u##TSizeBits##_t n) { \
-    err_t err; \
+    ret_t ret; \
     if (idx > self->len) { \
-      return FAILURE; \
+      return RET_FAILURE; \
     } \
-    if ((err = ID##_grow(self, n)) > 0) { \
-      return err; \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
     } \
     if (idx != self->len) { \
       memmove( \
@@ -281,46 +281,46 @@
     } \
     memcpy(self->buf + idx, items, (size_t) n * sizeof(TItem)); \
     self->len += n; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_push(ID##_t *__restrict__ self, TItem item) { \
-    err_t err; \
-    if ((err = ID##_grow(self, 1)) > 0) { \
-      return err; \
+    ret_t ret; \
+    if ((ret = ID##_grow(self, 1)) > 0) { \
+      return ret; \
     } \
     self->buf[self->len++] = item; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE bool_t \
   ID##_pop(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
     if (self->len == 0) { \
-      return FAILURE; \
+      return false; \
     } \
     --self->len; \
     if (out != nil) { \
       *out = self->buf[self->len]; \
     } \
-    return SUCCESS; \
+    return true; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_append(ID##_t *__restrict__ self, TItem *items, const u##TSizeBits##_t n) { \
-    err_t err; \
+    ret_t ret; \
     if (n == 0) { \
-      return SUCCESS; \
+      return RET_SUCCESS; \
     } \
-    if ((err = ID##_grow(self, n)) > 0) { \
-      return err; \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
     } \
     memcpy(self->buf + self->len, items, (size_t) n * sizeof(TItem)); \
     self->len += n; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_unshift(ID##_t *__restrict__ self, TItem item) { \
-    err_t err; \
-    if ((err = ID##_grow(self, 1)) > 0) { \
-      return err; \
+    ret_t ret; \
+    if ((ret = ID##_grow(self, 1)) > 0) { \
+      return ret; \
     } \
     memmove( \
       self->buf + 1, \
@@ -328,12 +328,12 @@
       (size_t) self->len++ * sizeof(TItem) \
     ); \
     self->buf[0] = item; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE bool_t \
   ID##_shift(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
     if (self->len == 0) { \
-      return FAILURE; \
+      return false; \
     } \
     if (out != nil) { \
       *out = self->buf[0]; \
@@ -347,17 +347,17 @@
         (size_t) --self->len * sizeof(TItem) \
       ); \
     } \
-    return SUCCESS; \
+    return true; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_prepend(ID##_t *__restrict__ self, TItem *items, \
     const u##TSizeBits##_t n) { \
-    err_t err; \
+    ret_t ret; \
     if (n == 0) { \
-      return SUCCESS; \
+      return RET_SUCCESS; \
     } \
-    if ((err = ID##_grow(self, n)) > 0) { \
-      return err; \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
     } \
     memmove( \
       self->buf + n, \
@@ -366,35 +366,35 @@
     ); \
     memcpy(self->buf, items, (size_t) n * sizeof(TItem)); \
     self->len += n; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_resize(ID##_t *__restrict__ self, const u##TSizeBits##_t n) { \
-    err_t err; \
-    if ((err = ID##_growth(self, n)) > 0) { \
-      return err; \
+    ret_t ret; \
+    if ((ret = ID##_growth(self, n)) > 0) { \
+      return ret; \
     } \
     self->len = n; \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_cpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src) { \
-    err_t err; \
-    if ((err = ID##_growth(self, src->len)) > 0) { \
-      return err; \
+    ret_t ret; \
+    if ((ret = ID##_growth(self, src->len)) > 0) { \
+      return ret; \
     } \
     memcpy(self->buf, src->buf, (size_t) (self->len = src->len)); \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE err_t \
+  static FORCEINLINE ret_t \
   ID##_ncpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src, \
     const u##TSizeBits##_t n) { \
-    err_t err; \
-    if ((err = ID##_growth(self, n)) > 0) { \
-      return err; \
+    ret_t ret; \
+    if ((ret = ID##_growth(self, n)) > 0) { \
+      return ret; \
     } \
     memcpy(self->buf, src->buf, (size_t) (self->len = n)); \
-    return SUCCESS; \
+    return RET_SUCCESS; \
   }
 
 #define VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \

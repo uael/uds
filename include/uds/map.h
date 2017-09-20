@@ -30,9 +30,9 @@
 # define __UDS_MAP_H
 
 #include <uty.h>
+#include <uerr.h>
 #include <stdlib.h>
 
-#include "err.h"
 #include "hash.h"
 #include "math.h"
 
@@ -50,15 +50,6 @@ enum bucket {
 #define bucket_set_isempty_false(buckets, i) ((buckets)[i]&=~BUCKET_EMPTY)
 #define bucket_set_isboth_false(buckets, i) ((buckets)[i]=0)
 #define bucket_set_isdel_true(buckets, i) ((buckets)[i]|=BUCKET_DELETED)
-
-enum map_put {
-  MAP_PUT_SUCCESS = 0,
-  MAP_PUT_ALLOC_FAILURE = 1,
-  MAP_PUT_DELETED = 2,
-  MAP_PUT_POPULATED = 3
-};
-
-typedef enum map_put map_put_t;
 
 #define mapof(TKey, TValue) struct { \
     u32_t cap, len, occupieds, upper_bound; \
@@ -122,7 +113,7 @@ typedef enum map_put map_put_t;
     } \
     return false; \
   } \
-  static FORCEINLINE u8_t \
+  static FORCEINLINE ret_t \
   ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
@@ -134,14 +125,14 @@ typedef enum map_put map_put_t;
       if (self->len >= (u32_t)(ensure * MAP_HASH_UPPER + 0.5)) j = 0;  /* requested size is too small */ \
       else { /* hash table size to be changed (shrink or expand); rehash */ \
         new_buckets = (u8_t*)MALLOC_FN(ensure); \
-        if (!new_buckets) return 1; \
+        if (!new_buckets) return RET_ERRNO; \
         memset(new_buckets, 2, ensure); \
         if (self->cap < ensure) {  /* expand */ \
           TKey *new_keys = (TKey*)REALLOC_FN((void *)self->keys, ensure * sizeof(TKey)); \
-          if (!new_keys) { FREE_FN(new_buckets); return 1; } \
+          if (!new_keys) { FREE_FN(new_buckets); return RET_ERRNO; } \
           self->keys = new_keys; \
           TValue *new_vals = (TValue*)REALLOC_FN((void *)self->vals, ensure * sizeof(TValue)); \
-          if (!new_vals) { FREE_FN(new_buckets); return 1; } \
+          if (!new_vals) { FREE_FN(new_buckets); return RET_ERRNO; } \
           self->vals = new_vals; \
         } /* otherwise shrink */ \
       } \
@@ -183,18 +174,18 @@ typedef enum map_put map_put_t;
       self->occupieds = self->len; \
       self->upper_bound = (u32_t)(self->cap * MAP_HASH_UPPER + 0.5); \
     } \
-    return 0; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE map_put_t \
+  static FORCEINLINE ret_t \
   ID##_put(ID##_t *__restrict__ self, TKey key, u32_t *__restrict__ out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
         if (ID##_resize(self, self->cap - 1) != 0) { /* clear "deleted" elements */ \
-          return 1; \
+          return RET_ERRNO; \
         } \
       } else if (ID##_resize(self, self->cap + 1) != 0) { /* expand the hash table */ \
-         return 1; \
+         return RET_ERRNO; \
       } \
     } /* TODO: to implement automatically shrinking; resize() already support shrinking */ \
     { \
@@ -220,14 +211,14 @@ typedef enum map_put map_put_t;
       bucket_set_isboth_false(self->buckets, x); \
       ++self->len; \
       ++self->occupieds; \
-      return 0; \
+      return RET_SUCCESS; \
     } else if (bucket_isdel(self->buckets, x)) { /* deleted */ \
       self->keys[x] = key; \
       bucket_set_isboth_false(self->buckets, x); \
       ++self->len; \
-      return 2; \
+      return RET_SUCCESS; \
     } \
-    return 3; /* Don't touch self->keys[x] if present and not deleted */ \
+    return RET_FAILURE; /* Don't touch self->keys[x] if present and not deleted */ \
   } \
   static FORCEINLINE bool_t \
   ID##_del(ID##_t *__restrict__ self, u32_t x) { \

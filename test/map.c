@@ -79,23 +79,19 @@ CUTEST(map, i8) {
 
   for (i = 0; i < I8_MAX; ++i) {
     switch (test_i8map_put(&self->i8map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_i8map_put(&self->i8map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -117,23 +113,19 @@ CUTEST(map, u8) {
 
   for (i = 0; i < U8_MAX; ++i) {
     switch (test_u8map_put(&self->u8map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_u8map_put(&self->u8map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -155,23 +147,19 @@ CUTEST(map, i16) {
 
   for (i = 0; i < I16_MAX; ++i) {
     switch (test_i16map_put(&self->i16map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_i16map_put(&self->i16map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -193,23 +181,19 @@ CUTEST(map, u16) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_u16map_put(&self->u16map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_u16map_put(&self->u16map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -231,23 +215,19 @@ CUTEST(map, i32) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_i32map_put(&self->i32map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_i32map_put(&self->i32map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -269,23 +249,19 @@ CUTEST(map, u32) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_u32map_put(&self->u32map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_u32map_put(&self->u32map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -307,23 +283,19 @@ CUTEST(map, i64) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_i64map_put(&self->i64map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_i64map_put(&self->i64map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -345,23 +317,19 @@ CUTEST(map, u64) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_u64map_put(&self->u64map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_u64map_put(&self->u64map, i, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -437,23 +405,19 @@ CUTEST(map, str) {
   str = strs;
   while (*str) {
     switch (test_strmap_put(&self->strmap, *str, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (test_strmap_put(&self->strmap, *str, &out)) {
-      case MAP_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case MAP_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case MAP_PUT_DELETED:
-        FAIL("deleted");
-      case MAP_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
     ++str;

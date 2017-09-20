@@ -69,23 +69,19 @@ CUTEST(set, i8) {
 
   for (i = 0; i < I8_MAX; ++i) {
     switch (i8set_put(&self->i8set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (i8set_put(&self->i8set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -107,23 +103,19 @@ CUTEST(set, u8) {
 
   for (i = 0; i < U8_MAX; ++i) {
     switch (u8set_put(&self->u8set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (u8set_put(&self->u8set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -145,23 +137,19 @@ CUTEST(set, i16) {
 
   for (i = 0; i < I16_MAX; ++i) {
     switch (i16set_put(&self->i16set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (i16set_put(&self->i16set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -183,23 +171,19 @@ CUTEST(set, u16) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (u16set_put(&self->u16set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (u16set_put(&self->u16set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -221,23 +205,19 @@ CUTEST(set, i32) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (i32set_put(&self->i32set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (i32set_put(&self->i32set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -259,23 +239,19 @@ CUTEST(set, u32) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (u32set_put(&self->u32set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (u32set_put(&self->u32set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -297,23 +273,19 @@ CUTEST(set, i64) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (i64set_put(&self->i64set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (i64set_put(&self->i64set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -335,23 +307,19 @@ CUTEST(set, u64) {
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (u64set_put(&self->u64set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (u64set_put(&self->u64set, i, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
   }
@@ -427,23 +395,19 @@ CUTEST(set, str) {
   str = strs;
   while (*str) {
     switch (strset_put(&self->strset, *str, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         break;
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         FAIL("populated");
     }
     switch (strset_put(&self->strset, *str, &out)) {
-      case SET_PUT_SUCCESS:
+      case RET_SUCCESS:
         FAIL("must be populated");
-      case SET_PUT_ALLOC_FAILURE:
+      case RET_ERRNO:
         FAIL("allocation failure");
-      case SET_PUT_DELETED:
-        FAIL("deleted");
-      case SET_PUT_POPULATED:
+      case RET_FAILURE:
         break;
     }
     ++str;

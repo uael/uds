@@ -29,7 +29,6 @@
 #ifndef __UDS_H
 # define __UDS_H
 
-#include "uds/err.h"
 #include "uds/hash.h"
 #include "uds/map.h"
 #include "uds/math.h"

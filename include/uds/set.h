@@ -30,21 +30,12 @@
 # define __UDS_SET_H
 
 #include <uty.h>
+#include <uerr.h>
 #include <stdlib.h>
 
-#include "err.h"
 #include "hash.h"
 #include "map.h"
 #include "math.h"
-
-enum set_put {
-  SET_PUT_SUCCESS = 0,
-  SET_PUT_ALLOC_FAILURE = 1,
-  SET_PUT_DELETED = 2,
-  SET_PUT_POPULATED = 3
-};
-
-typedef enum set_put set_put_t;
 
 #define setof(TItem) struct { \
     u32_t cap, len, occupieds, upper_bound; \
@@ -102,7 +93,7 @@ typedef enum set_put set_put_t;
     } \
     return false; \
   } \
-  static FORCEINLINE u8_t \
+  static FORCEINLINE ret_t \
   ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
@@ -114,11 +105,11 @@ typedef enum set_put set_put_t;
       if (self->len >= (u32_t)(ensure * MAP_HASH_UPPER + 0.5)) j = 0;  /* requested size is too small */ \
       else { /* hash table size to be changed (shrink or expand); rehash */ \
         new_buckets = (u8_t*)MALLOC_FN(ensure); \
-        if (!new_buckets) return 1; \
+        if (!new_buckets) return RET_ERRNO; \
         memset(new_buckets, 2, ensure); \
         if (self->cap < ensure) {  /* expand */ \
           TItem *new_items = (TItem*)REALLOC_FN((void *)self->items, ensure * sizeof(TItem)); \
-          if (!new_items) { FREE_FN(new_buckets); return 1; } \
+          if (!new_items) { FREE_FN(new_buckets); return RET_ERRNO; } \
           self->items = new_items; \
         } /* otherwise shrink */ \
       } \
@@ -155,18 +146,18 @@ typedef enum set_put set_put_t;
       self->occupieds = self->len; \
       self->upper_bound = (u32_t)(self->cap * MAP_HASH_UPPER + 0.5); \
     } \
-    return 0; \
+    return RET_SUCCESS; \
   } \
-  static FORCEINLINE set_put_t \
+  static FORCEINLINE ret_t \
   ID##_put(ID##_t *__restrict__ self, TItem item, u32_t *__restrict__ out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
         if (ID##_resize(self, self->cap - 1) != 0) { /* clear "deleted" elements */ \
-          return SET_PUT_ALLOC_FAILURE; \
+          return RET_ERRNO; \
         } \
       } else if (ID##_resize(self, self->cap + 1) != 0) { /* expand the hash table */ \
-         return SET_PUT_ALLOC_FAILURE; \
+         return RET_ERRNO; \
       } \
     } /* TODO: to implement automatically shrinking; resize() already support shrinking */ \
     { \
@@ -192,14 +183,14 @@ typedef enum set_put set_put_t;
       bucket_set_isboth_false(self->buckets, x); \
       ++self->len; \
       ++self->occupieds; \
-      return SET_PUT_SUCCESS; \
+      return RET_SUCCESS; \
     } else if (bucket_isdel(self->buckets, x)) { /* deleted */ \
       self->items[x] = item; \
       bucket_set_isboth_false(self->buckets, x); \
       ++self->len; \
-      return SET_PUT_DELETED; \
+      return RET_SUCCESS; \
     } \
-    return SET_PUT_POPULATED; /* Don't touch self->items[x] if populated */ \
+    return RET_FAILURE; /* Don't touch self->items[x] if populated */ \
   } \
   static FORCEINLINE bool_t \
   ID##_del(ID##_t *__restrict__ self, u32_t x) { \
