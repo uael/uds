@@ -7,6 +7,7 @@ include(ProjectDependency)
 
 project(uds C)
 project_dependency(uty GIT_REPOSITORY https://github.com/uael/uty.git)
+project_dependency(uerr GIT_REPOSITORY https://github.com/uael/uerr.git)
 project_dependency(cute GIT_REPOSITORY https://github.com/uael/cute.git)
 
 set(uds_INC_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
