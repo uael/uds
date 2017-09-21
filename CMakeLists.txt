@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 cmake_policy(SET CMP0054 OLD)
 cmake_policy(SET CMP0045 OLD)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+if (NOT EXISTS ${CMAKE_SOURCE_DIR}/cmake)
+  execute_process(
+    COMMAND git clone https://github.com/uael/cmake-modules.git cmake
+    RESULT_VARIABLE result OUTPUT_QUIET
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+endif ()
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(ProjectDependency)
 
 project(uds C)
