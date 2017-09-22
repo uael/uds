@@ -584,7 +584,7 @@
     return ret; \
   }
 
-#define SEQ_DECL_EX( \
+#define SEQ_DECL( \
     SCOPE, ID, T, BITS, \
     DECL_ctor, DECL_dtor, \
     DECL_cap, DECL_size, DECL_at, DECL_offset, \
@@ -622,10 +622,7 @@
   DECL_cpy(SCOPE, ID, T, BITS); \
   DECL_ncpy(SCOPE, ID, T, BITS);
 
-#define SEQ_DECL(SCOPE, ID, T, BITS, ...) \
-  SEQ_DECL_EX(SCOPE, ID, T, BITS, __VA_ARGS__)
-
-#define SEQ_IMPL_EX( \
+#define SEQ_IMPL( \
     SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP, \
     IMPL_ctor, IMPL_dtor, \
     IMPL_cap, IMPL_size, IMPL_at, IMPL_offset, \
@@ -662,9 +659,5 @@
   IMPL_eraseonce(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   IMPL_cpy(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   IMPL_ncpy(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP)
-
-#define SEQ_IMPL(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP, ...) \
-  SEQ_IMPL_EX(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP, \
-    __VA_ARGS__)
 
 #endif /* !__UDS_SEQ_H */

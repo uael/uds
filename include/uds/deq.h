@@ -313,70 +313,69 @@
     return RET_SUCCESS; \
   }
 
-#define DEQ_DECLS \
-  SEQ_DECL_ctor, \
-  SEQ_DECL_dtor, \
-  SEQ_DECL_cap, \
-  SEQ_DECL_size, \
-  SEQ_DECL_at, \
-  SEQ_DECL_offset, \
-  SEQ_DECL_realloc, \
-  SEQ_DECL_ensure, \
-  SEQ_DECL_grow, \
-  SEQ_DECL_shrink, \
-  SEQ_DECL_trim, \
-  SEQ_DECL_insert, \
-  SEQ_DECL_emplace, \
-  SEQ_DECL_push, \
-  SEQ_DECL_append, \
-  SEQ_DECL_pop, \
-  SEQ_DECL_unshift, \
-  SEQ_DECL_prepend, \
-  SEQ_DECL_shift, \
-  SEQ_DECL_remove, \
-  SEQ_DECL_removen, \
-  SEQ_DECL_erase, \
-  SEQ_DECL_erasen, \
-  SEQ_DECL_eraseonce, \
-  SEQ_DECL_cpy, \
-  SEQ_DECL_ncpy
-
-#define DEQ_IMPLS \
-  SEQ_IMPL_ctor, \
-  DEQ_IMPL_dtor, \
-  SEQ_IMPL_cap, \
-  DEQ_IMPL_size, \
-  DEQ_IMPL_at, \
-  DEQ_IMPL_offset, \
-  SEQ_IMPL_realloc, \
-  SEQ_IMPL_ensure, \
-  SEQ_IMPL_grow, \
-  SEQ_IMPL_shrink, \
-  SEQ_IMPL_trim, \
-  DEQ_IMPL_insert, \
-  DEQ_IMPL_emplace, \
-  SEQ_IMPL_push, \
-  SEQ_IMPL_append, \
-  SEQ_IMPL_pop, \
-  DEQ_IMPL_unshift, \
-  DEQ_IMPL_prepend, \
-  DEQ_IMPL_shift, \
-  DEQ_IMPL_remove, \
-  DEQ_IMPL_removen, \
-  DEQ_IMPL_erase, \
-  DEQ_IMPL_erasen, \
-  DEQ_IMPL_eraseonce, \
-  DEQ_IMPL_cpy, \
-  DEQ_IMPL_ncpy
-
-#define DEQ_DECL(SCOPE, ID, T, BITS) SEQ_DECL(SCOPE, ID, T, BITS, DEQ_DECLS)
+#define DEQ_DECL(SCOPE, ID, T, BITS) \
+  SEQ_DECL(SCOPE, ID, T, BITS, \
+    SEQ_DECL_ctor, \
+    SEQ_DECL_dtor, \
+    SEQ_DECL_cap, \
+    SEQ_DECL_size, \
+    SEQ_DECL_at, \
+    SEQ_DECL_offset, \
+    SEQ_DECL_realloc, \
+    SEQ_DECL_ensure, \
+    SEQ_DECL_grow, \
+    SEQ_DECL_shrink, \
+    SEQ_DECL_trim, \
+    SEQ_DECL_insert, \
+    SEQ_DECL_emplace, \
+    SEQ_DECL_push, \
+    SEQ_DECL_append, \
+    SEQ_DECL_pop, \
+    SEQ_DECL_unshift, \
+    SEQ_DECL_prepend, \
+    SEQ_DECL_shift, \
+    SEQ_DECL_remove, \
+    SEQ_DECL_removen, \
+    SEQ_DECL_erase, \
+    SEQ_DECL_erasen, \
+    SEQ_DECL_eraseonce, \
+    SEQ_DECL_cpy, \
+    SEQ_DECL_ncpy \
+  )
 #define DEQ8_DECL(SCOPE, ID, T) DEQ_DECL(SCOPE, ID, T, 8)
 #define DEQ16_DECL(SCOPE, ID, T) DEQ_DECL(SCOPE, ID, T, 16)
 #define DEQ32_DECL(SCOPE, ID, T) DEQ_DECL(SCOPE, ID, T, 32)
 #define DEQ64_DECL(SCOPE, ID, T) DEQ_DECL(SCOPE, ID, T, 64)
 
 #define DEQ_IMPL_DFT(SCOPE, ID, T, BITS, REALLOC, FREE, CMP) \
-  SEQ_IMPL(SCOPE, ID, T, BITS, cap, tail, buf, REALLOC, FREE, CMP, DEQ_IMPLS)
+  SEQ_IMPL(SCOPE, ID, T, BITS, cap, tail, buf, REALLOC, FREE, CMP, \
+    SEQ_IMPL_ctor, \
+    DEQ_IMPL_dtor, \
+    SEQ_IMPL_cap, \
+    DEQ_IMPL_size, \
+    DEQ_IMPL_at, \
+    DEQ_IMPL_offset, \
+    SEQ_IMPL_realloc, \
+    SEQ_IMPL_ensure, \
+    SEQ_IMPL_grow, \
+    SEQ_IMPL_shrink, \
+    SEQ_IMPL_trim, \
+    DEQ_IMPL_insert, \
+    DEQ_IMPL_emplace, \
+    SEQ_IMPL_push, \
+    SEQ_IMPL_append, \
+    SEQ_IMPL_pop, \
+    DEQ_IMPL_unshift, \
+    DEQ_IMPL_prepend, \
+    DEQ_IMPL_shift, \
+    DEQ_IMPL_remove, \
+    DEQ_IMPL_removen, \
+    DEQ_IMPL_erase, \
+    DEQ_IMPL_erasen, \
+    DEQ_IMPL_eraseonce, \
+    DEQ_IMPL_cpy, \
+    DEQ_IMPL_ncpy \
+  )
 #define DEQ8_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
   DEQ_IMPL_DFT(SCOPE, ID, T, 8, REALLOC, FREE, CMP)
 #define DEQ16_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
