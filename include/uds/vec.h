@@ -5,7 +5,7 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
- * in the Software without __restrict__ion, including without limitation the rights
+ * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
@@ -29,393 +29,118 @@
 #ifndef __UDS_VEC_H
 # define __UDS_VEC_H
 
-#include <uty.h>
-#include <uerr.h>
-#include <stdlib.h>
+#include "seq.h"
 
-#include "math.h"
-
-#ifndef VEC_MIN_CAP
-# define VEC_MIN_CAP 32
-#endif
-
-#define vecof(TItem, TSizeBits) struct { \
+#define vecof(T, TSizeBits) \
+  struct { \
     u##TSizeBits##_t cap, len; \
-    TItem *buf; \
+    T *buf; \
   }
 
-#define VEC_IMPL_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
-  FREE_FN) \
-  static FORCEINLINE void \
-  ID##_ctor(ID##_t *__restrict__ self) { \
-    *self = (ID##_t) {.cap = 0, .len = 0, .buf = nil}; \
-  } \
-  static FORCEINLINE void \
-  ID##_dtor(ID##_t *__restrict__ self) { \
-    self->cap = 0; \
-    self->len = 0; \
-    if (self->buf) { \
-      FREE_FN(self->buf); \
-      self->buf = nil; \
-    } \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_growth(ID##_t *__restrict__ self, const u##TSizeBits##_t nmin) { \
-    if (nmin > 0) { \
-      if (self->cap) { \
-        if (self->cap < nmin) { \
-          if (nmin == U##TSizeBits##_MAX || ISPOW2(nmin)) { \
-            self->cap = nmin; \
-          } else { \
-            do self->cap *= 2; while (self->cap < nmin); \
-          } \
-          if ((self->buf = (TItem *) \
-            REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) \
-            == nil) { \
-            self->cap = 0; \
-            return RET_ERRNO; \
-          } \
-        } \
-      } else { \
-        if (nmin == VEC_MIN_CAP || (nmin > VEC_MIN_CAP && \
-          (nmin == U##TSizeBits##_MAX || ISPOW2(nmin)))) { \
-          self->cap = nmin; \
-        } else { \
-          self->cap = VEC_MIN_CAP; \
-          while (self->cap < nmin) self->cap *= 2; \
-        } \
-        if ((self->buf = \
-          (TItem *) MALLOC_FN(sizeof(TItem) * (size_t) self->cap)) == nil) { \
-          self->cap = 0; \
-          return RET_ERRNO; \
-        } \
-      } \
-    } \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_decay(ID##_t *__restrict__ self, const u##TSizeBits##_t nmax) { \
-    u##TSizeBits##_t nearest_pow2; \
-    nearest_pow2 = pow2_next##TSizeBits(nmax); \
-    if (self->cap > nearest_pow2) { \
-      self->cap = nearest_pow2; \
-      if ((self->buf = (TItem *) \
-        REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) == nil) { \
-        self->cap = 0; \
-        return RET_ERRNO; \
-      } \
-    } \
-    if (self->len > nmax) { \
-      memset((i8_t *) self->buf + nmax * sizeof(TItem), 0, \
-        ((size_t) (self->len - nmax)) * sizeof(TItem) \
-      ); \
-      self->len = nmax; \
-    } \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_grow(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
-    u##TSizeBits##_t u; \
-    u = self->len + nmem; \
-    return ID##_growth(self, (const u##TSizeBits##_t) \
-      (u < self->len ? U##TSizeBits##_MAX : u)); \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_shrink(ID##_t *__restrict__ self, const u##TSizeBits##_t nmem) { \
-    return ID##_decay( \
-      self, \
-      (const u##TSizeBits##_t) (nmem >= self->len ? 0 : self->len - nmem) \
-    ); \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_trim(ID##_t *__restrict__ self) { \
-    u##TSizeBits##_t nearest_pow2; \
-    nearest_pow2 = pow2_next##TSizeBits(self->len); \
-    if (self->cap > nearest_pow2) { \
-      self->cap = nearest_pow2; \
-      if ((self->buf = (TItem *) \
-        REALLOC_FN(self->buf, sizeof(TItem) * (size_t) self->cap)) == nil) { \
-        return RET_ERRNO; \
-      } \
-    } \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE bool_t \
-  ID##_remove(ID##_t *__restrict__ self, const u##TSizeBits##_t idx) { \
-    if (idx >= self->len) { \
-      return false; \
-    } \
-    if (idx + 1 == self->len) { \
-      --self->len; \
-    } else { \
-      memmove( \
-        self->buf + idx, \
-        self->buf + idx + 1, \
-        (size_t) (--self->len - idx) * sizeof(TItem) \
-      ); \
-    } \
-    return true; \
-  } \
-  static FORCEINLINE bool_t \
-  ID##_removen(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
-    const u##TSizeBits##_t n) { \
-    if (idx >= self->len) { \
-      return false; \
-    } \
-    if (idx + n > self->len) { \
-      self->len = idx; \
-    } else { \
-      memmove( \
-        self->buf + idx, \
-        self->buf + idx + n, \
-        (size_t) ((self->len -= n) - idx) * sizeof(TItem) \
-      ); \
-    } \
-    return true; \
-  } \
-  static FORCEINLINE u##TSizeBits##_t \
-  ID##_erase(ID##_t *__restrict__ self, TItem item) { \
-    u##TSizeBits##_t len, i, j, n; \
-    if (self->len == 0) { \
-      return 0; \
-    } \
-    len = self->len; \
-    for (i = 0; i < self->len; ++i) { \
-      if (CMP_FN(item, self->buf[i]) == 0) { \
-        j = i; \
-        n = 1; \
-        while (i + 1 < self->len && CMP_FN(item, self->buf[i + 1]) == 0) { \
-          ++i; \
-          ++n; \
-        } \
-        memmove( \
-          self->buf + j, \
-          self->buf + j + n, \
-          (size_t) ((self->len -= n) - j) * sizeof(TItem) \
-        ); \
-      } \
-    } \
-    return len - self->len; \
-  } \
-  static FORCEINLINE u##TSizeBits##_t \
-  ID##_erasen(ID##_t *__restrict__ self, TItem item, \
-    u##TSizeBits##_t n) { \
-    u##TSizeBits##_t len, i, j, c; \
-    if (n == 0 || self->len == 0) { \
-      return 0; \
-    } \
-    len = self->len; \
-    for (i = 0; i < self->len && n > 0; ++i) { \
-      if (CMP_FN(item, self->buf[i]) == 0) { \
-        --n; \
-        j = i; \
-        c = 1; \
-        while (n > 0 && i + 1 < self->len && \
-          CMP_FN(item, self->buf[i + 1]) == 0) { \
-          --n; \
-          ++i; \
-          ++c; \
-        } \
-        memmove( \
-          self->buf + j, \
-          self->buf + j + c, \
-          (size_t) ((self->len -= c) - j) * sizeof(TItem) \
-        ); \
-      } \
-    } \
-    return len - self->len; \
-  } \
-  static FORCEINLINE bool_t \
-  ID##_eraseonce(ID##_t *__restrict__ self, TItem item) { \
-    u##TSizeBits##_t i; \
-    for (i = 0; i < self->len; ++i) { \
-      if (CMP_FN(item, self->buf[i]) == 0) { \
-        memmove( \
-          self->buf + i, \
-          self->buf + i + 1, \
-          (size_t) (--self->len - i) * sizeof(TItem) \
-        ); \
-        return true; \
-      } \
-    } \
-    return false; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_insert(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
-    TItem item) { \
-    ret_t ret; \
-    if (idx > self->len) { \
-      return RET_FAILURE; \
-    } \
-    if ((ret = ID##_grow(self, 1)) > 0) { \
-      return ret; \
-    } \
-    if (idx == self->len) { \
-      ++self->len; \
-    } else { \
-      memmove( \
-        self->buf + idx + 1, \
-        self->buf + idx, \
-        (size_t) (self->len++ - idx) * sizeof(TItem) \
-      ); \
-    } \
-    self->buf[idx] = item; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_emplace(ID##_t *__restrict__ self, const u##TSizeBits##_t idx, \
-    TItem *items, const u##TSizeBits##_t n) { \
-    ret_t ret; \
-    if (idx > self->len) { \
-      return RET_FAILURE; \
-    } \
-    if ((ret = ID##_grow(self, n)) > 0) { \
-      return ret; \
-    } \
-    if (idx != self->len) { \
-      memmove( \
-        self->buf + idx + n, \
-        self->buf + idx, \
-        (size_t) (self->len - idx) * sizeof(TItem) \
-      ); \
-    } \
-    memcpy(self->buf + idx, items, (size_t) n * sizeof(TItem)); \
-    self->len += n; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_push(ID##_t *__restrict__ self, TItem item) { \
-    ret_t ret; \
-    if ((ret = ID##_grow(self, 1)) > 0) { \
-      return ret; \
-    } \
-    self->buf[self->len++] = item; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE bool_t \
-  ID##_pop(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
-    if (self->len == 0) { \
-      return false; \
-    } \
-    --self->len; \
-    if (out != nil) { \
-      *out = self->buf[self->len]; \
-    } \
-    return true; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_append(ID##_t *__restrict__ self, TItem *items, const u##TSizeBits##_t n) { \
-    ret_t ret; \
-    if (n == 0) { \
-      return RET_SUCCESS; \
-    } \
-    if ((ret = ID##_grow(self, n)) > 0) { \
-      return ret; \
-    } \
-    memcpy(self->buf + self->len, items, (size_t) n * sizeof(TItem)); \
-    self->len += n; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_unshift(ID##_t *__restrict__ self, TItem item) { \
-    ret_t ret; \
-    if ((ret = ID##_grow(self, 1)) > 0) { \
-      return ret; \
-    } \
-    memmove( \
-      self->buf + 1, \
-      self->buf, \
-      (size_t) self->len++ * sizeof(TItem) \
-    ); \
-    self->buf[0] = item; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE bool_t \
-  ID##_shift(ID##_t *__restrict__ self, TItem *__restrict__ out) { \
-    if (self->len == 0) { \
-      return false; \
-    } \
-    if (out != nil) { \
-      *out = self->buf[0]; \
-    } \
-    if (self->len == 1) { \
-      --self->len; \
-    } else { \
-      memmove( \
-        self->buf, \
-        self->buf + 1, \
-        (size_t) --self->len * sizeof(TItem) \
-      ); \
-    } \
-    return true; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_prepend(ID##_t *__restrict__ self, TItem *items, \
-    const u##TSizeBits##_t n) { \
-    ret_t ret; \
-    if (n == 0) { \
-      return RET_SUCCESS; \
-    } \
-    if ((ret = ID##_grow(self, n)) > 0) { \
-      return ret; \
-    } \
-    memmove( \
-      self->buf + n, \
-      self->buf, \
-      (size_t) self->len * sizeof(TItem) \
-    ); \
-    memcpy(self->buf, items, (size_t) n * sizeof(TItem)); \
-    self->len += n; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_resize(ID##_t *__restrict__ self, const u##TSizeBits##_t n) { \
-    ret_t ret; \
-    if ((ret = ID##_growth(self, n)) > 0) { \
-      return ret; \
-    } \
-    self->len = n; \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_cpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src) { \
-    ret_t ret; \
-    if ((ret = ID##_growth(self, src->len)) > 0) { \
-      return ret; \
-    } \
-    memcpy(self->buf, src->buf, (size_t) (self->len = src->len)); \
-    return RET_SUCCESS; \
-  } \
-  static FORCEINLINE ret_t \
-  ID##_ncpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src, \
-    const u##TSizeBits##_t n) { \
-    ret_t ret; \
-    if ((ret = ID##_growth(self, n)) > 0) { \
-      return ret; \
-    } \
-    memcpy(self->buf, src->buf, (size_t) (self->len = n)); \
-    return RET_SUCCESS; \
-  }
+#define VEC_DECLS \
+  SEQ_DECL_ctor, \
+  SEQ_DECL_dtor, \
+  SEQ_DECL_cap, \
+  SEQ_DECL_size, \
+  SEQ_DECL_at, \
+  SEQ_DECL_offset, \
+  SEQ_DECL_realloc, \
+  SEQ_DECL_ensure, \
+  SEQ_DECL_grow, \
+  SEQ_DECL_shrink, \
+  SEQ_DECL_trim, \
+  SEQ_DECL_resize, \
+  SEQ_DECL_remove, \
+  SEQ_DECL_removen, \
+  SEQ_DECL_erase, \
+  SEQ_DECL_erasen, \
+  SEQ_DECL_eraseonce, \
+  SEQ_DECL_insert, \
+  SEQ_DECL_emplace, \
+  SEQ_DECL_push, \
+  SEQ_DECL_pop, \
+  SEQ_DECL_append, \
+  SEQ_DECL_unshift, \
+  SEQ_DECL_shift, \
+  SEQ_DECL_prepend, \
+  SEQ_DECL_cpy, \
+  SEQ_DECL_ncpy
 
-#define VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, \
-  FREE_FN) \
-  typedef vecof(TItem, TSizeBits) ID##_t; \
-  VEC_IMPL_ALLOC(ID, TItem, TSizeBits, CMP_FN, MALLOC_FN, REALLOC_FN, FREE_FN)
+#define VEC_IMPLS \
+  SEQ_IMPL_ctor, \
+  SEQ_IMPL_dtor, \
+  SEQ_IMPL_cap, \
+  SEQ_IMPL_size, \
+  SEQ_IMPL_at, \
+  SEQ_IMPL_offset, \
+  SEQ_IMPL_realloc, \
+  SEQ_IMPL_ensure, \
+  SEQ_IMPL_grow, \
+  SEQ_IMPL_shrink, \
+  SEQ_IMPL_trim, \
+  SEQ_IMPL_resize, \
+  SEQ_IMPL_remove, \
+  SEQ_IMPL_removen, \
+  SEQ_IMPL_erase, \
+  SEQ_IMPL_erasen, \
+  SEQ_IMPL_eraseonce, \
+  SEQ_IMPL_insert, \
+  SEQ_IMPL_emplace, \
+  SEQ_IMPL_push, \
+  SEQ_IMPL_pop, \
+  SEQ_IMPL_append, \
+  SEQ_IMPL_unshift, \
+  SEQ_IMPL_shift, \
+  SEQ_IMPL_prepend, \
+  SEQ_IMPL_cpy, \
+  SEQ_IMPL_ncpy
 
-#define VEC_DEFINE(ID, TItem, TSizeBits, CMP_FN) \
-  VEC_DEFINE_ALLOC(ID, TItem, TSizeBits, CMP_FN, malloc, realloc, free)
+#define VEC_DECL(SCOPE, ID, T, BITS) SEQ_DECL(SCOPE, ID, T, BITS, VEC_DECLS)
+#define VEC8_DECL(SCOPE, ID, T) SEQ_DECL_DFT(SCOPE, ID, T, 8)
+#define VEC16_DECL(SCOPE, ID, T) SEQ_DECL_DFT(SCOPE, ID, T, 16)
+#define VEC32_DECL(SCOPE, ID, T) SEQ_DECL_DFT(SCOPE, ID, T, 32)
+#define VEC64_DECL(SCOPE, ID, T) SEQ_DECL_DFT(SCOPE, ID, T, 64)
 
-#define VEC8_DEFINE(ID, TItem, CMP_FN) \
-  VEC_DEFINE(ID, TItem, 8, CMP_FN)
+#define VEC_IMPL_DFT(SCOPE, ID, T, BITS, REALLOC, FREE, CMP) \
+  SEQ_IMPL(SCOPE, ID, T, BITS, cap, len, buf, REALLOC, FREE, CMP, VEC_IMPLS)
+#define VEC8_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
+  VEC_IMPL_DFT(SCOPE, ID, T, 8, REALLOC, FREE, CMP)
+#define VEC16_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
+  VEC_IMPL_DFT(SCOPE, ID, T, 16, REALLOC, FREE, CMP)
+#define VEC32_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
+  VEC_IMPL_DFT(SCOPE, ID, T, 32, REALLOC, FREE, CMP)
+#define VEC64_IMPL_DFT(SCOPE, ID, T, REALLOC, FREE, CMP) \
+  VEC_IMPL_DFT(SCOPE, ID, T, 64, REALLOC, FREE, CMP)
 
-#define VEC16_DEFINE(ID, TItem, CMP_FN) \
-  VEC_DEFINE(ID, TItem, 16, CMP_FN)
+#define VEC_IMPL(SCOPE, ID, T, BITS, CMP) \
+  VEC_IMPL_DFT(SCOPE, ID, T, BITS, realloc, free, CMP)
+#define VEC8_IMPL(SCOPE, ID, T, CMP) \
+  VEC_IMPL(SCOPE, ID, T, 8, CMP)
+#define VEC16_IMPL(SCOPE, ID, T, CMP) \
+  VEC_IMPL(SCOPE, ID, T, 16, CMP)
+#define VEC32_IMPL(SCOPE, ID, T, CMP) \
+  VEC_IMPL(SCOPE, ID, T, 32, CMP)
+#define VEC64_IMPL(SCOPE, ID, T, CMP) \
+  VEC_IMPL(SCOPE, ID, T, 64, CMP)
 
-#define VEC32_DEFINE(ID, TItem, CMP_FN) \
-  VEC_DEFINE(ID, TItem, 32, CMP_FN)
+#define VEC_DEFINE_DFT(ID, T, BITS, REALLOC, FREE, CMP) \
+  typedef vecof(T, BITS) ID##_t; \
+  VEC_IMPL_DFT(static FORCEINLINE, ID, T, BITS, REALLOC, FREE, CMP)
+#define VEC8_DEFINE_DFT(ID, T, REALLOC, FREE, CMP) \
+  VEC_DEFINE_DFT(ID, T, 8, REALLOC, FREE, CMP)
+#define VEC16_DEFINE_DFT(ID, T, REALLOC, FREE, CMP) \
+  VEC_DEFINE_DFT(ID, T, 16, REALLOC, FREE, CMP)
+#define VEC32_DEFINE_DFT(ID, T, REALLOC, FREE, CMP) \
+  VEC_DEFINE_DFT(ID, T, 32, REALLOC, FREE, CMP)
+#define VEC64_DEFINE_DFT(ID, T, REALLOC, FREE, CMP) \
+  VEC_DEFINE_DFT(ID, T, 64, REALLOC, FREE, CMP)
 
-#define VEC64_DEFINE(ID, TItem, CMP_FN) \
-  VEC_DEFINE(ID, TItem, 64, CMP_FN)
+#define VEC_DEFINE(ID, T, BITS, CMP) \
+  VEC_DEFINE_DFT(ID, T, BITS, realloc, free, CMP)
+#define VEC8_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 8, CMP)
+#define VEC16_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 16, CMP)
+#define VEC32_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 32, CMP)
+#define VEC64_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 64, CMP)
 
 VEC32_DEFINE(i8vec, i8_t, i8cmp);
 VEC32_DEFINE(u8vec, u8_t, u8cmp);
