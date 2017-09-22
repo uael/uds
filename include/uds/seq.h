@@ -595,32 +595,32 @@
     DECL_remove, DECL_removen, \
     DECL_erase, DECL_erasen, DECL_eraseonce, \
     DECL_cpy, DECL_ncpy) \
-  DECL_ctor(SCOPE, ID, T, BITS) \
-  DECL_dtor(SCOPE, ID, T, BITS) \
-  DECL_cap(SCOPE, ID, T, BITS) \
-  DECL_size(SCOPE, ID, T, BITS) \
-  DECL_at(SCOPE, ID, T, BITS) \
-  DECL_offset(SCOPE, ID, T, BITS) \
-  DECL_realloc(SCOPE, ID, T, BITS) \
-  DECL_ensure(SCOPE, ID, T, BITS) \
-  DECL_grow(SCOPE, ID, T, BITS) \
-  DECL_shrink(SCOPE, ID, T, BITS) \
-  DECL_trim(SCOPE, ID, T, BITS) \
-  DECL_insert(SCOPE, ID, T, BITS) \
-  DECL_emplace(SCOPE, ID, T, BITS) \
-  DECL_push(SCOPE, ID, T, BITS) \
-  DECL_append(SCOPE, ID, T, BITS) \
-  DECL_pop(SCOPE, ID, T, BITS) \
-  DECL_unshift(SCOPE, ID, T, BITS) \
-  DECL_prepend(SCOPE, ID, T, BITS) \
-  DECL_shift(SCOPE, ID, T, BITS) \
-  DECL_remove(SCOPE, ID, T, BITS) \
-  DECL_removen(SCOPE, ID, T, BITS) \
-  DECL_erase(SCOPE, ID, T, BITS) \
-  DECL_erasen(SCOPE, ID, T, BITS) \
-  DECL_eraseonce(SCOPE, ID, T, BITS) \
-  DECL_cpy(SCOPE, ID, T, BITS) \
-  DECL_ncpy(SCOPE, ID, T, BITS)
+  DECL_ctor(SCOPE, ID, T, BITS); \
+  DECL_dtor(SCOPE, ID, T, BITS); \
+  DECL_cap(SCOPE, ID, T, BITS); \
+  DECL_size(SCOPE, ID, T, BITS); \
+  DECL_at(SCOPE, ID, T, BITS); \
+  DECL_offset(SCOPE, ID, T, BITS); \
+  DECL_realloc(SCOPE, ID, T, BITS); \
+  DECL_ensure(SCOPE, ID, T, BITS); \
+  DECL_grow(SCOPE, ID, T, BITS); \
+  DECL_shrink(SCOPE, ID, T, BITS); \
+  DECL_trim(SCOPE, ID, T, BITS); \
+  DECL_insert(SCOPE, ID, T, BITS); \
+  DECL_emplace(SCOPE, ID, T, BITS); \
+  DECL_push(SCOPE, ID, T, BITS); \
+  DECL_append(SCOPE, ID, T, BITS); \
+  DECL_pop(SCOPE, ID, T, BITS); \
+  DECL_unshift(SCOPE, ID, T, BITS); \
+  DECL_prepend(SCOPE, ID, T, BITS); \
+  DECL_shift(SCOPE, ID, T, BITS); \
+  DECL_remove(SCOPE, ID, T, BITS); \
+  DECL_removen(SCOPE, ID, T, BITS); \
+  DECL_erase(SCOPE, ID, T, BITS); \
+  DECL_erasen(SCOPE, ID, T, BITS); \
+  DECL_eraseonce(SCOPE, ID, T, BITS); \
+  DECL_cpy(SCOPE, ID, T, BITS); \
+  DECL_ncpy(SCOPE, ID, T, BITS);
 
 #define SEQ_DECL(SCOPE, ID, T, BITS, ...) \
   SEQ_DECL_EX(SCOPE, ID, T, BITS, __VA_ARGS__)
