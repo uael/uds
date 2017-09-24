@@ -109,7 +109,7 @@
   SEQ_DECL_realloc(SCOPE, ID, T, BITS) { \
     if (self->CAP != n) { \
       void *buf; \
-      if ((buf = REALLOC(self->BUF, sizeof(T))) == nil) { \
+      if ((buf = REALLOC(self->BUF, (size_t) n * sizeof(T))) == nil) { \
         return RET_ERRNO; \
       } \
       self->BUF = buf; \
