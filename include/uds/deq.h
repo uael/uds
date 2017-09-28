@@ -424,6 +424,5 @@ DEQ32_DEFINE(u32deq, u32_t, u32cmp);
 DEQ32_DEFINE(i64deq, i64_t, i64cmp);
 DEQ32_DEFINE(u64deq, u64_t, u64cmp);
 DEQ32_DEFINE(strdeq, i8_t *, strcmp);
-DEQ32_DEFINE(dstr, i8_t, i8cmp);
 
 #endif /* !__UDS_DEQ_H */

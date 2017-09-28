@@ -243,6 +243,67 @@
     return RET_SUCCESS; \
   }
 
+#define SEQ_DECL_nemplace(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_nemplace(ID##_t *__restrict__ self, const u##BITS##_t idx, T *items, \
+    const u##BITS##_t n)
+
+#define SEQ_IMPL_nemplace(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
+  CMP) \
+  SEQ_DECL_nemplace(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    if (idx > ID##_size(self)) { \
+      return RET_FAILURE; \
+    } \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
+    } \
+    if (idx != ID##_size(self)) { \
+      memmove( \
+        self->BUF + idx + n, \
+        self->BUF + idx, \
+        (size_t) (ID##_size(self) - idx) * sizeof(T) \
+      ); \
+    } \
+    memcpy(self->BUF + idx, items, (size_t) n * sizeof(T)); \
+    self->LEN += n; \
+    return RET_SUCCESS; \
+  }
+
+#define SEQ_DECL_emplace_nt(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_emplace(ID##_t *__restrict__ self, const u##BITS##_t idx, T *items)
+
+#define SEQ_IMPL_emplace_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
+  CMP) \
+  SEQ_DECL_emplace_nt(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    u##BITS##_t n; \
+    if (idx == ID##_size(self)) { \
+      return ID##_append(self, items); \
+    } \
+    if (idx == 0) { \
+      return ID##_prepend(self, items); \
+    } \
+    if (idx > ID##_size(self)) { \
+      return RET_FAILURE; \
+    } \
+    n = strlen((i8_t const *) items); \
+    if ((ret = ID##_grow(self, n + 1)) > 0) { \
+      return ret; \
+    } \
+    if (idx != ID##_size(self)) { \
+      memmove( \
+        self->BUF + idx + n, \
+        self->BUF + idx, \
+        (size_t) (ID##_size(self) - idx + 1) * sizeof(T) \
+      ); \
+    } \
+    memcpy(self->BUF + idx, items, (size_t) n * sizeof(T)); \
+    self->LEN += n; \
+    return RET_SUCCESS; \
+  }
+
 #define SEQ_DECL_push(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
   ID##_push(ID##_t *__restrict__ self, T item)
@@ -254,6 +315,17 @@
       return ret; \
     } \
     self->BUF[self->LEN++] = item; \
+    return RET_SUCCESS; \
+  }
+
+#define SEQ_IMPL_push_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
+  SEQ_DECL_push(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    if ((ret = ID##_grow(self, 2)) > 0) { \
+      return ret; \
+    } \
+    self->BUF[self->LEN++] = item; \
+    self->BUF[self->LEN] = '\0'; \
     return RET_SUCCESS; \
   }
 
@@ -275,10 +347,33 @@
     return RET_SUCCESS; \
   }
 
-#define SEQ_IMPL_append_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
-  SEQ_DECL_append(SCOPE, ID, T, BITS) { \
+#define SEQ_DECL_nappend(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_nappend(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+
+#define SEQ_IMPL_nappend(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
+  SEQ_DECL_nappend(SCOPE, ID, T, BITS) { \
     ret_t ret; \
     if (n == 0) { \
+      return RET_SUCCESS; \
+    } \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
+    } \
+    memcpy(self->BUF + self->LEN, items, (size_t) n * sizeof(T)); \
+    self->LEN += n; \
+    return RET_SUCCESS; \
+  }
+
+#define SEQ_DECL_append_nt(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_append(ID##_t *__restrict__ self, T *items)
+
+#define SEQ_IMPL_append_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
+  SEQ_DECL_append_nt(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    u##BITS##_t n; \
+    if ((n = strlen((i8_t const *) items)) == 0) { \
       return RET_SUCCESS; \
     } \
     if ((ret = ID##_grow(self, n + 1)) > 0) { \
@@ -302,6 +397,19 @@
     if (out != nil) { \
       *out = self->BUF[self->LEN]; \
     } \
+    return true; \
+  }
+
+#define SEQ_IMPL_pop_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
+  SEQ_DECL_pop(SCOPE, ID, T, BITS) { \
+    if (ID##_size(self) == 0) { \
+      return false; \
+    } \
+    --self->LEN; \
+    if (out != nil) { \
+      *out = self->BUF[self->LEN]; \
+    } \
+    self->BUF[self->LEN] = '\0'; \
     return true; \
   }
 
@@ -335,6 +443,59 @@
     ret_t ret; \
     if (n == 0) { \
       return RET_SUCCESS; \
+    } \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
+    } \
+    memmove( \
+      self->BUF + n, \
+      self->BUF, \
+      (size_t) ID##_size(self) * sizeof(T) \
+    ); \
+    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    self->LEN += n; \
+    return RET_SUCCESS; \
+  }
+
+#define SEQ_DECL_nprepend(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_nprepend(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+
+#define SEQ_IMPL_nprepend(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
+  CMP) \
+  SEQ_DECL_nprepend(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    if (n == 0) { \
+      return RET_SUCCESS; \
+    } \
+    if ((ret = ID##_grow(self, n)) > 0) { \
+      return ret; \
+    } \
+    memmove( \
+      self->BUF + n, \
+      self->BUF, \
+      (size_t) ID##_size(self) * sizeof(T) \
+    ); \
+    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    self->LEN += n; \
+    return RET_SUCCESS; \
+  }
+
+#define SEQ_DECL_prepend_nt(SCOPE, ID, T, BITS) \
+  SCOPE ret_t \
+  ID##_prepend(ID##_t *__restrict__ self, T *items)
+
+#define SEQ_IMPL_prepend_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
+  CMP) \
+  SEQ_DECL_prepend_nt(SCOPE, ID, T, BITS) { \
+    ret_t ret; \
+    u##BITS##_t n; \
+    n = strlen((i8_t const *) items); \
+    if (n == 0) { \
+      return RET_SUCCESS; \
+    } \
+    if (ID##_size(self) == 0) { \
+      return ID##_append(self, items); \
     } \
     if ((ret = ID##_grow(self, n)) > 0) { \
       return ret; \

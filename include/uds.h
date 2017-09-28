@@ -29,9 +29,12 @@
 #ifndef __UDS_H
 # define __UDS_H
 
+#include "uds/deq.h"
+#include "uds/dstr.h"
 #include "uds/hash.h"
 #include "uds/map.h"
 #include "uds/math.h"
+#include "uds/seq.h"
 #include "uds/set.h"
 #include "uds/vec.h"
 

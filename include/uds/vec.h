@@ -39,32 +39,32 @@
 
 #define VEC_DECL(SCOPE, ID, T, BITS) \
   SEQ_DECL(SCOPE, ID, T, BITS, \
-    SEQ_IMPL_ctor, \
-    SEQ_IMPL_dtor, \
-    SEQ_IMPL_cap, \
-    SEQ_IMPL_size, \
-    SEQ_IMPL_at, \
-    SEQ_IMPL_offset, \
-    SEQ_IMPL_realloc, \
-    SEQ_IMPL_ensure, \
-    SEQ_IMPL_grow, \
-    SEQ_IMPL_shrink, \
-    SEQ_IMPL_trim, \
-    SEQ_IMPL_insert, \
-    SEQ_IMPL_emplace, \
-    SEQ_IMPL_push, \
-    SEQ_IMPL_append, \
-    SEQ_IMPL_pop, \
-    SEQ_IMPL_unshift, \
-    SEQ_IMPL_prepend, \
-    SEQ_IMPL_shift, \
-    SEQ_IMPL_remove, \
-    SEQ_IMPL_removen, \
-    SEQ_IMPL_erase, \
-    SEQ_IMPL_erasen, \
-    SEQ_IMPL_eraseonce, \
-    SEQ_IMPL_cpy, \
-    SEQ_IMPL_ncpy \
+    SEQ_DECL_ctor, \
+    SEQ_DECL_dtor, \
+    SEQ_DECL_cap, \
+    SEQ_DECL_size, \
+    SEQ_DECL_at, \
+    SEQ_DECL_offset, \
+    SEQ_DECL_realloc, \
+    SEQ_DECL_ensure, \
+    SEQ_DECL_grow, \
+    SEQ_DECL_shrink, \
+    SEQ_DECL_trim, \
+    SEQ_DECL_insert, \
+    SEQ_DECL_emplace, \
+    SEQ_DECL_push, \
+    SEQ_DECL_append, \
+    SEQ_DECL_pop, \
+    SEQ_DECL_unshift, \
+    SEQ_DECL_prepend, \
+    SEQ_DECL_shift, \
+    SEQ_DECL_remove, \
+    SEQ_DECL_removen, \
+    SEQ_DECL_erase, \
+    SEQ_DECL_erasen, \
+    SEQ_DECL_eraseonce, \
+    SEQ_DECL_cpy, \
+    SEQ_DECL_ncpy \
   )
 #define VEC8_DECL(SCOPE, ID, T) VEC_DECL(SCOPE, ID, T, 8)
 #define VEC16_DECL(SCOPE, ID, T) VEC_DECL(SCOPE, ID, T, 16)
