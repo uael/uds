@@ -1,2 +1,8 @@
 # uds
-uael platform independent c Data Structures abstraction
+Uael cross-platform C Data Structures abstraction
+* vector
+* deque
+* stack
+* queue
+* map
+* set
