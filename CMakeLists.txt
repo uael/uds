@@ -13,18 +13,40 @@ endif ()
 set(CMAKE_MODULE_PATH "${CMAKE_CACHEFILE_DIR}/cmake")
 include(ProjectDependency)
 
+set(CMAKE_C_STANDARD 99)
+set(BUILD_SHARED_LIBS OFF)
+
 project(uds C)
 project_dependency(uerr GIT_REPOSITORY https://github.com/uael/uerr.git)
 
 set(uds_INC_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
+set(uds_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(uds_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/test)
 
+file(GLOB_RECURSE uds_SRCS ${uds_SRCS} ${uds_SRC_DIR}/*.c)
 file(GLOB_RECURSE uds_HDRS ${uds_HDRS} ${uds_INC_DIR}/uds/*.h)
 set(uds_HDR ${uds_INC_DIR}/uds.h)
 
-add_library(uds INTERFACE)
-target_include_directories(uds INTERFACE ${uds_INC_DIR})
-target_link_libraries(uds INTERFACE uerr)
+add_library(uds ${uds_SRCS} ${uds_HDRS} ${uds_HDR})
+target_include_directories(uds PUBLIC ${uds_INC_DIR})
+target_link_libraries(uds PUBLIC uerr)
+
+set(CMAKE_C_FLAGS "")
+set(CMAKE_C_FLAGS_DEBUG "")
+set(CMAKE_C_FLAGS_RELEASE "")
+
+if (MSVC)
+  target_compile_options(uds
+    PRIVATE /MT$<$<CONFIG:Debug>:d> /Oy
+    PRIVATE /O$<$<CONFIG:Debug>:d>$<$<CONFIG:Release>:x>)
+  set_target_properties(uds
+    PROPERTIES LINK_FLAGS /nodefaultlib:msvcrt.lib)
+else ()
+  target_compile_options(uds
+    PRIVATE -Wall -Werror -Wextra -fomit-frame-pointer
+    PRIVATE -Wno-missing-field-initializers
+    PRIVATE -O$<$<CONFIG:Debug>:0 -g3>$<$<CONFIG:Release>:3>)
+endif ()
 
 get_directory_property(uds_PARENT PARENT_DIRECTORY)
 if (NOT ${uds_PARENT})
@@ -48,7 +70,5 @@ if (${uds_DEVEL} AND EXISTS ${uds_TEST_DIR})
   endforeach ()
 endif ()
 
-install(FILES ${uds_HDRS}
-  DESTINATION include/uds)
-install(FILES ${uds_HDR}
-  DESTINATION include)
+install(FILES ${uds_HDRS} DESTINATION include/uds)
+install(FILES ${uds_HDR} DESTINATION include)

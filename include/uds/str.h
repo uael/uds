@@ -23,20 +23,13 @@
  * SOFTWARE.
  */
 
-/*!@file uds.h
+/*!@file uds/str.h
  * @author uael
  */
-#ifndef __UDS_H
-# define __UDS_H
+#ifndef __UDS_STR_H
+# define __UDS_STR_H
 
-#include "uds/deq.h"
-#include "uds/dstr.h"
-#include "uds/hash.h"
-#include "uds/map.h"
-#include "uds/math.h"
-#include "uds/seq.h"
-#include "uds/set.h"
-#include "uds/str.h"
-#include "uds/vec.h"
+#include <uty.h>
 
-#endif /* !__UDS_H */
+
+#endif /* !__UDS_STR_H */
