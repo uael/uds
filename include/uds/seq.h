@@ -109,7 +109,7 @@
   SEQ_DECL_realloc(SCOPE, ID, T, BITS) { \
     if (self->CAP != n) { \
       void *buf; \
-      if ((buf = REALLOC(self->BUF, (size_t) n * sizeof(T))) == nil) { \
+      if ((buf = REALLOC(self->BUF, (usize_t) n * sizeof(T))) == nil) { \
         return RET_ERRNO; \
       } \
       self->BUF = buf; \
@@ -209,7 +209,7 @@
       memmove( \
         self->BUF + idx + 1, \
         self->BUF + idx, \
-        (size_t) (self->LEN++ - idx) * sizeof(T) \
+        (usize_t) (self->LEN++ - idx) * sizeof(T) \
       ); \
     } \
     self->BUF[idx] = item; \
@@ -235,10 +235,10 @@
       memmove( \
         self->BUF + idx + n, \
         self->BUF + idx, \
-        (size_t) (ID##_size(self) - idx) * sizeof(T) \
+        (usize_t) (ID##_size(self) - idx) * sizeof(T) \
       ); \
     } \
-    memcpy(self->BUF + idx, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + idx, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -262,10 +262,10 @@
       memmove( \
         self->BUF + idx + n, \
         self->BUF + idx, \
-        (size_t) (ID##_size(self) - idx) * sizeof(T) \
+        (usize_t) (ID##_size(self) - idx) * sizeof(T) \
       ); \
     } \
-    memcpy(self->BUF + idx, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + idx, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -288,7 +288,7 @@
     if (idx > ID##_size(self)) { \
       return RET_FAILURE; \
     } \
-    n = strlen((i8_t const *) items); \
+    n = strlen((char_t const *) items); \
     if ((ret = ID##_grow(self, n + 1)) > 0) { \
       return ret; \
     } \
@@ -296,10 +296,10 @@
       memmove( \
         self->BUF + idx + n, \
         self->BUF + idx, \
-        (size_t) (ID##_size(self) - idx + 1) * sizeof(T) \
+        (usize_t) (ID##_size(self) - idx + 1) * sizeof(T) \
       ); \
     } \
-    memcpy(self->BUF + idx, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + idx, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -342,7 +342,7 @@
     if ((ret = ID##_grow(self, n)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF + self->LEN, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + self->LEN, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -360,7 +360,7 @@
     if ((ret = ID##_grow(self, n)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF + self->LEN, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + self->LEN, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -373,13 +373,13 @@
   SEQ_DECL_append_nt(SCOPE, ID, T, BITS) { \
     ret_t ret; \
     u##BITS##_t n; \
-    if ((n = strlen((i8_t const *) items)) == 0) { \
+    if ((n = strlen((char_t const *) items)) == 0) { \
       return RET_SUCCESS; \
     } \
     if ((ret = ID##_grow(self, n + 1)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF + self->LEN, items, (size_t) (n + 1) * sizeof(T)); \
+    memcpy(self->BUF + self->LEN, items, (usize_t) (n + 1) * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -427,7 +427,7 @@
     memmove( \
       self->BUF + 1, \
       self->BUF, \
-      (size_t) self->LEN++ * sizeof(T) \
+      (usize_t) self->LEN++ * sizeof(T) \
     ); \
     self->BUF[0] = item; \
     return RET_SUCCESS; \
@@ -450,9 +450,9 @@
     memmove( \
       self->BUF + n, \
       self->BUF, \
-      (size_t) ID##_size(self) * sizeof(T) \
+      (usize_t) ID##_size(self) * sizeof(T) \
     ); \
-    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -474,9 +474,9 @@
     memmove( \
       self->BUF + n, \
       self->BUF, \
-      (size_t) ID##_size(self) * sizeof(T) \
+      (usize_t) ID##_size(self) * sizeof(T) \
     ); \
-    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -490,7 +490,7 @@
   SEQ_DECL_prepend_nt(SCOPE, ID, T, BITS) { \
     ret_t ret; \
     u##BITS##_t n; \
-    n = strlen((i8_t const *) items); \
+    n = strlen((char_t const *) items); \
     if (n == 0) { \
       return RET_SUCCESS; \
     } \
@@ -503,9 +503,9 @@
     memmove( \
       self->BUF + n, \
       self->BUF, \
-      (size_t) ID##_size(self) * sizeof(T) \
+      (usize_t) ID##_size(self) * sizeof(T) \
     ); \
-    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF, items, (usize_t) n * sizeof(T)); \
     self->LEN += n; \
     return RET_SUCCESS; \
   }
@@ -528,7 +528,7 @@
       memmove( \
         self->BUF, \
         self->BUF + 1, \
-        (size_t) --self->LEN * sizeof(T) \
+        (usize_t) --self->LEN * sizeof(T) \
       ); \
     } \
     return true; \
@@ -552,7 +552,7 @@
       memmove( \
         self->BUF + idx, \
         self->BUF + idx + 1, \
-        (size_t) (--self->LEN - idx) * sizeof(T) \
+        (usize_t) (--self->LEN - idx) * sizeof(T) \
       ); \
     } \
     return true; \
@@ -578,7 +578,7 @@
       memmove( \
         self->BUF + idx, \
         self->BUF + idx + n, \
-        (size_t) ((self->LEN -= n) - idx) * sizeof(T) \
+        (usize_t) ((self->LEN -= n) - idx) * sizeof(T) \
       ); \
     } \
     return true; \
@@ -605,7 +605,7 @@
         memmove( \
           self->BUF + j, \
           self->BUF + j + n, \
-          (size_t) ((self->LEN -= n) - j) * sizeof(T) \
+          (usize_t) ((self->LEN -= n) - j) * sizeof(T) \
         ); \
       } \
     } \
@@ -636,7 +636,7 @@
         memmove( \
           self->BUF + j, \
           self->BUF + j + c, \
-          (size_t) ((self->LEN -= c) - j) * sizeof(T) \
+          (usize_t) ((self->LEN -= c) - j) * sizeof(T) \
         ); \
       } \
     } \
@@ -656,7 +656,7 @@
         memmove( \
           self->BUF + i, \
           self->BUF + i + 1, \
-          (size_t) (--self->LEN - i) * sizeof(T) \
+          (usize_t) (--self->LEN - i) * sizeof(T) \
         ); \
         return true; \
       } \
@@ -674,7 +674,7 @@
     if ((ret = ID##_ensure(self, src->LEN)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF, src->BUF, (size_t) (self->LEN = src->LEN)); \
+    memcpy(self->BUF, src->BUF, (usize_t) (self->LEN = src->LEN)); \
     return RET_SUCCESS; \
   }
 
@@ -684,7 +684,7 @@
     if ((ret = ID##_ensure(self, src->LEN + 1)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF, src->BUF, (size_t) ((self->LEN = src->LEN) + 1)); \
+    memcpy(self->BUF, src->BUF, (usize_t) ((self->LEN = src->LEN) + 1)); \
     return RET_SUCCESS; \
   }
 
@@ -699,7 +699,7 @@
     if ((ret = ID##_ensure(self, n)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF, src->BUF, (size_t) (self->LEN = n)); \
+    memcpy(self->BUF, src->BUF, (usize_t) (self->LEN = n)); \
     return RET_SUCCESS; \
   }
 
@@ -709,7 +709,7 @@
     if ((ret = ID##_ensure(self, n + 1)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF, src->BUF, (size_t) ((self->LEN = n) + 1)); \
+    memcpy(self->BUF, src->BUF, (usize_t) ((self->LEN = n) + 1)); \
     return RET_SUCCESS; \
   }
 

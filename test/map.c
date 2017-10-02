@@ -210,8 +210,7 @@ CUTEST(map, u16) {
 }
 
 CUTEST(map, i32) {
-  u32_t out;
-  i32_t i;
+  u32_t out, i;
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (test_i32map_put(&self->i32map, i, &out)) {
@@ -347,8 +346,8 @@ CUTEST(map, u64) {
 
 CUTEST(map, str) {
   u32_t out;
-  const i8_t **str;
-  const i8_t *strs[51] = {
+  const char_t **str;
+  const char_t *strs[51] = {
     "2lsDCacn6PYP7XbIWBDj",
     "rUPoh4tmafEbIxevHCSk",
     "VKaP4ZFpkOsedOYzvbQr",

@@ -273,7 +273,7 @@ CUTEST(vec, emplace) {
 }
 
 CUTEST(vec, push) {
-  i8_t i, j;
+  u8_t i, j;
 
   for (i = 0; i < 10; ++i) {
     ASSERT_EQ(RET_SUCCESS, i8vec_push(&self->i8vec, i));
@@ -355,7 +355,8 @@ CUTEST(vec, pop) {
 }
 
 CUTEST(vec, unshift) {
-  i8_t i, j, k;
+  u8_t i, j;
+  i8_t k;
 
   for (i = 0; i < 10; ++i) {
     ASSERT_EQ(RET_SUCCESS, i8vec_unshift(&self->i8vec, i));

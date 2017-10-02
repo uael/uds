@@ -260,6 +260,6 @@ enum bucket {
   MAP_DEFINE(ID, u64_t, TValue, u64cmp, TValue_CMP_FN, u64hash, u64eq)
 
 #define STR_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, const i8_t *, TValue, strcmp, TValue_CMP_FN, strhash, streq)
+  MAP_DEFINE(ID, const char_t *, TValue, strcmp, TValue_CMP_FN, strhash, streq)
 
 #endif /* !__UDS_MAP_H */

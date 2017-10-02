@@ -273,7 +273,7 @@ CUTEST(deq, emplace) {
 }
 
 CUTEST(deq, push) {
-  i8_t i, j;
+  u8_t i, j;
 
   for (i = 0; i < 10; ++i) {
     ASSERT_EQ(RET_SUCCESS, i8deq_push(&self->i8deq, i));
@@ -355,7 +355,8 @@ CUTEST(deq, pop) {
 }
 
 CUTEST(deq, unshift) {
-  i8_t i, j, k;
+  u8_t i, j;
+  i8_t k;
 
   for (i = 0; i < 10; ++i) {
     ASSERT_EQ(RET_SUCCESS, i8deq_unshift(&self->i8deq, i));

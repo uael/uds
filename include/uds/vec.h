@@ -147,7 +147,8 @@ VEC32_DEFINE(i32vec, i32_t, i32cmp);
 VEC32_DEFINE(u32vec, u32_t, u32cmp);
 VEC32_DEFINE(i64vec, i64_t, i64cmp);
 VEC32_DEFINE(u64vec, u64_t, u64cmp);
-VEC32_DEFINE(strvec, i8_t *, strcmp);
+VEC32_DEFINE(charvec, char_t, i8cmp);
+VEC32_DEFINE(strvec, char_t *, strcmp);
 VEC32_DEFINE(dstr, i8_t, i8cmp);
 
 #endif /* !__UDS_VEC_H */

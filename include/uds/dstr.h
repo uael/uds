@@ -34,7 +34,7 @@
 #define dstrof(TSizeBits) \
   struct { \
     u##TSizeBits##_t len, cap; \
-    i8_t *buf; \
+    char_t *buf; \
   }
 
 #define DSTR_IMPL_trim(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
@@ -44,7 +44,7 @@
   }
 
 #define DSTR_DECL(SCOPE, ID, BITS) \
-  SEQ_DECL(SCOPE, ID, i8_t, BITS, \
+  SEQ_DECL(SCOPE, ID, char_t, BITS, \
     SEQ_DECL_ctor, \
     SEQ_DECL_dtor, \
     SEQ_DECL_cap, \
@@ -78,7 +78,7 @@
 #define DSTR64_DECL(SCOPE, ID) DSTR_DECL(SCOPE, ID, 64)
 
 #define DSTR_IMPL_DFT(SCOPE, ID, BITS, REALLOC, FREE) \
-  SEQ_IMPL(SCOPE, ID, i8_t, BITS, cap, len, buf, REALLOC, FREE, i8cmp, \
+  SEQ_IMPL(SCOPE, ID, char_t, BITS, cap, len, buf, REALLOC, FREE, i8cmp, \
     SEQ_IMPL_ctor, \
     SEQ_IMPL_dtor, \
     SEQ_IMPL_cap, \

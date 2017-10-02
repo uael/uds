@@ -80,7 +80,7 @@
       memmove( \
         self->BUF + self->head + idx + 1, \
         self->BUF + self->head + idx, \
-        (size_t) (self->LEN++ - idx) * sizeof(T) \
+        (usize_t) (self->LEN++ - idx) * sizeof(T) \
       ); \
     } \
     self->BUF[idx] = item; \
@@ -105,11 +105,11 @@
       memmove( \
         self->BUF + self->head + idx + n, \
         self->BUF + self->head + idx, \
-        (size_t) (ID##_size(self) - idx) * sizeof(T) \
+        (usize_t) (ID##_size(self) - idx) * sizeof(T) \
       ); \
       self->LEN += n; \
     } \
-    memcpy(self->BUF + self->head + idx, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF + self->head + idx, items, (usize_t) n * sizeof(T)); \
     return RET_SUCCESS; \
   }
 
@@ -124,7 +124,7 @@
       memmove( \
         self->BUF + 1, \
         self->BUF, \
-        (size_t) self->LEN++ * sizeof(T) \
+        (usize_t) self->LEN++ * sizeof(T) \
       ); \
     } else { \
       --self->head; \
@@ -147,21 +147,21 @@
       memmove( \
         self->BUF + n, \
         self->BUF, \
-        (size_t) self->LEN * sizeof(T) \
+        (usize_t) self->LEN * sizeof(T) \
       ); \
       self->LEN += n; \
     } else if (self->head < n) { \
       memmove( \
         self->BUF + n, \
         self->BUF + self->head, \
-        (size_t) (self->LEN - self->head) * sizeof(T) \
+        (usize_t) (self->LEN - self->head) * sizeof(T) \
       ); \
       self->LEN += n - self->head; \
       self->head = 0; \
     } else { \
       self->head -= n; \
     } \
-    memcpy(self->BUF, items, (size_t) n * sizeof(T)); \
+    memcpy(self->BUF, items, (usize_t) n * sizeof(T)); \
     return RET_SUCCESS; \
   }
 
@@ -193,7 +193,7 @@
       memmove( \
         self->BUF + idx + self->head, \
         self->BUF + idx + self->head + 1, \
-        (size_t) (--self->LEN - idx) * sizeof(T) \
+        (usize_t) (--self->LEN - idx) * sizeof(T) \
       ); \
     } \
     return true; \
@@ -216,7 +216,7 @@
       memmove( \
         self->BUF + self->head + idx, \
         self->BUF + self->head + idx + n, \
-        (size_t) ((self->LEN -= n) - idx) * sizeof(T) \
+        (usize_t) ((self->LEN -= n) - idx) * sizeof(T) \
       ); \
     } \
     return true; \
@@ -239,7 +239,7 @@
         memmove( \
           self->BUF + j, \
           self->BUF + j + n, \
-          (size_t) ((self->LEN -= n) - j) * sizeof(T) \
+          (usize_t) ((self->LEN -= n) - j) * sizeof(T) \
         ); \
       } \
     } \
@@ -266,7 +266,7 @@
         memmove( \
           self->BUF + j, \
           self->BUF + j + c, \
-          (size_t) ((self->LEN -= c) - j) * sizeof(T) \
+          (usize_t) ((self->LEN -= c) - j) * sizeof(T) \
         ); \
       } \
     } \
@@ -282,7 +282,7 @@
         memmove( \
           self->BUF + i, \
           self->BUF + i + 1, \
-          (size_t) (--self->LEN - i) * sizeof(T) \
+          (usize_t) (--self->LEN - i) * sizeof(T) \
         ); \
         return true; \
       } \
@@ -296,7 +296,7 @@
     if ((ret = ID##_ensure(self, src->LEN)) > 0) { \
       return ret; \
     } \
-    memcpy(self->BUF, src->BUF, (size_t) (self->LEN = src->LEN)); \
+    memcpy(self->BUF, src->BUF, (usize_t) (self->LEN = src->LEN)); \
     self->head = src->head; \
     return RET_SUCCESS; \
   }
@@ -308,7 +308,7 @@
       return ret; \
     } \
     self->head = src->head; \
-    memcpy(self->BUF + src->head, src->BUF + src->head, (size_t) (n)); \
+    memcpy(self->BUF + src->head, src->BUF + src->head, (usize_t) (n)); \
     self->LEN = self->head + n; \
     return RET_SUCCESS; \
   }
@@ -423,6 +423,7 @@ DEQ32_DEFINE(i32deq, i32_t, i32cmp);
 DEQ32_DEFINE(u32deq, u32_t, u32cmp);
 DEQ32_DEFINE(i64deq, i64_t, i64cmp);
 DEQ32_DEFINE(u64deq, u64_t, u64cmp);
-DEQ32_DEFINE(strdeq, i8_t *, strcmp);
+DEQ32_DEFINE(chardeq, char_t, i8cmp);
+DEQ32_DEFINE(strdeq, char_t *, strcmp);
 
 #endif /* !__UDS_DEQ_H */
