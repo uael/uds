@@ -28,7 +28,7 @@
 #include "uds/deq.h"
 
 #define NOMEM_REALLOC(x, y) ((errno = ENOMEM), nil)
-DEQ_DEFINE_DFT(i8deq_nomem, i8_t, 8, NOMEM_REALLOC, free, i8cmp);
+DEQ_DEFINE_DFT(i8deq_nomem, i8_t, 8, NOMEM_REALLOC, free, i8cmp)
 
 typedef struct {
   f64_t x, y;
@@ -38,7 +38,7 @@ i8_t point_cmp(const point_t a, const point_t b) {
   return f64cmp(a.x, b.x) + f64cmp(a.y, b.y);
 }
 
-DEQ64_DEFINE(line, point_t, point_cmp);
+DEQ64_DEFINE(line, point_t, point_cmp)
 
 CUTEST_DATA {
   i8deq_t i8deq;

@@ -415,15 +415,15 @@
 #define DEQ32_DEFINE(ID, T, CMP) DEQ_DEFINE(ID, T, 32, CMP)
 #define DEQ64_DEFINE(ID, T, CMP) DEQ_DEFINE(ID, T, 64, CMP)
 
-DEQ32_DEFINE(i8deq, i8_t, i8cmp);
-DEQ32_DEFINE(u8deq, u8_t, u8cmp);
-DEQ32_DEFINE(i16deq, i16_t, i16cmp);
-DEQ32_DEFINE(u16deq, u16_t, u16cmp);
-DEQ32_DEFINE(i32deq, i32_t, i32cmp);
-DEQ32_DEFINE(u32deq, u32_t, u32cmp);
-DEQ32_DEFINE(i64deq, i64_t, i64cmp);
-DEQ32_DEFINE(u64deq, u64_t, u64cmp);
-DEQ32_DEFINE(chardeq, char_t, i8cmp);
-DEQ32_DEFINE(strdeq, char_t *, strcmp);
+DEQ32_DEFINE(i8deq, i8_t, i8cmp)
+DEQ32_DEFINE(u8deq, u8_t, u8cmp)
+DEQ32_DEFINE(i16deq, i16_t, i16cmp)
+DEQ32_DEFINE(u16deq, u16_t, u16cmp)
+DEQ32_DEFINE(i32deq, i32_t, i32cmp)
+DEQ32_DEFINE(u32deq, u32_t, u32cmp)
+DEQ32_DEFINE(i64deq, i64_t, i64cmp)
+DEQ32_DEFINE(u64deq, u64_t, u64cmp)
+DEQ32_DEFINE(chardeq, char_t, i8cmp)
+DEQ32_DEFINE(strdeq, char_t *, strcmp)
 
 #endif /* !__UDS_DEQ_H */

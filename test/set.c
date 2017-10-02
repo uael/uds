@@ -201,7 +201,7 @@ CUTEST(set, u16) {
 
 CUTEST(set, i32) {
   u32_t out;
-  i32_t i;
+  u32_t i;
 
   for (i = 0; i < U16_MAX; ++i) {
     switch (i32set_put(&self->i32set, i, &out)) {
@@ -337,8 +337,8 @@ CUTEST(set, u64) {
 
 CUTEST(set, str) {
   u32_t out;
-  const i8_t **str;
-  const i8_t *strs[51] = {
+  const char_t **str;
+  const char_t *strs[51] = {
     "2lsDCacn6PYP7XbIWBDj",
     "rUPoh4tmafEbIxevHCSk",
     "VKaP4ZFpkOsedOYzvbQr",

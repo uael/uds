@@ -27,15 +27,15 @@
 
 #include "uds/map.h"
 
-I8_MAP_DEFINE(test_i8map, u8_t, u8cmp);
-U8_MAP_DEFINE(test_u8map, u8_t, u8cmp);
-I16_MAP_DEFINE(test_i16map, u8_t, u8cmp);
-U16_MAP_DEFINE(test_u16map, u8_t, u8cmp);
-I32_MAP_DEFINE(test_i32map, u8_t, u8cmp);
-U32_MAP_DEFINE(test_u32map, u8_t, u8cmp);
-I64_MAP_DEFINE(test_i64map, u8_t, u8cmp);
-U64_MAP_DEFINE(test_u64map, u8_t, u8cmp);
-STR_MAP_DEFINE(test_strmap, u8_t, u8cmp);
+I8_MAP_DEFINE(test_i8map, u8_t, u8cmp)
+U8_MAP_DEFINE(test_u8map, u8_t, u8cmp)
+I16_MAP_DEFINE(test_i16map, u8_t, u8cmp)
+U16_MAP_DEFINE(test_u16map, u8_t, u8cmp)
+I32_MAP_DEFINE(test_i32map, u8_t, u8cmp)
+U32_MAP_DEFINE(test_u32map, u8_t, u8cmp)
+I64_MAP_DEFINE(test_i64map, u8_t, u8cmp)
+U64_MAP_DEFINE(test_u64map, u8_t, u8cmp)
+STR_MAP_DEFINE(test_strmap, u8_t, u8cmp)
 
 CUTEST_DATA {
   test_i8map_t i8map;

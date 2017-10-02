@@ -139,16 +139,16 @@
 #define VEC32_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 32, CMP)
 #define VEC64_DEFINE(ID, T, CMP) VEC_DEFINE(ID, T, 64, CMP)
 
-VEC32_DEFINE(i8vec, i8_t, i8cmp);
-VEC32_DEFINE(u8vec, u8_t, u8cmp);
-VEC32_DEFINE(i16vec, i16_t, i16cmp);
-VEC32_DEFINE(u16vec, u16_t, u16cmp);
-VEC32_DEFINE(i32vec, i32_t, i32cmp);
-VEC32_DEFINE(u32vec, u32_t, u32cmp);
-VEC32_DEFINE(i64vec, i64_t, i64cmp);
-VEC32_DEFINE(u64vec, u64_t, u64cmp);
-VEC32_DEFINE(charvec, char_t, i8cmp);
-VEC32_DEFINE(strvec, char_t *, strcmp);
-VEC32_DEFINE(dstr, i8_t, i8cmp);
+VEC32_DEFINE(i8vec, i8_t, i8cmp)
+VEC32_DEFINE(u8vec, u8_t, u8cmp)
+VEC32_DEFINE(i16vec, i16_t, i16cmp)
+VEC32_DEFINE(u16vec, u16_t, u16cmp)
+VEC32_DEFINE(i32vec, i32_t, i32cmp)
+VEC32_DEFINE(u32vec, u32_t, u32cmp)
+VEC32_DEFINE(i64vec, i64_t, i64cmp)
+VEC32_DEFINE(u64vec, u64_t, u64cmp)
+VEC32_DEFINE(charvec, char_t, i8cmp)
+VEC32_DEFINE(strvec, char_t *, strcmp)
+VEC32_DEFINE(dstr, i8_t, i8cmp)
 
 #endif /* !__UDS_VEC_H */

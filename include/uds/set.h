@@ -232,15 +232,15 @@
 #define STR_SET_DEFINE(ID) \
   SET_DEFINE(ID, const char_t *, strhash, streq)
 
-I8_SET_DEFINE(i8set);
-U8_SET_DEFINE(u8set);
-I16_SET_DEFINE(i16set);
-U16_SET_DEFINE(u16set);
-I32_SET_DEFINE(i32set);
-U32_SET_DEFINE(u32set);
-I64_SET_DEFINE(i64set);
-U64_SET_DEFINE(u64set);
+I8_SET_DEFINE(i8set)
+U8_SET_DEFINE(u8set)
+I16_SET_DEFINE(i16set)
+U16_SET_DEFINE(u16set)
+I32_SET_DEFINE(i32set)
+U32_SET_DEFINE(u32set)
+I64_SET_DEFINE(i64set)
+U64_SET_DEFINE(u64set)
 SET_DEFINE(charset, char_t, i8hash, i8eq)
-STR_SET_DEFINE(strset);
+STR_SET_DEFINE(strset)
 
 #endif /* !__UDS_SET_H */

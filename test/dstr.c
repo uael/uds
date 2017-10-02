@@ -24,12 +24,11 @@
  */
 
 #include <cute.h>
-#include <uds.h>
 
 #include "uds/dstr.h"
 
 #define NOMEM_REALLOC(x, y) ((errno = ENOMEM), nil)
-DSTR_DEFINE_DFT(dstr8_nomem, 8, NOMEM_REALLOC, free);
+DSTR_DEFINE_DFT(dstr8_nomem, 8, NOMEM_REALLOC, free)
 
 
 CUTEST_DATA {
