@@ -41,7 +41,7 @@
 #define u64hash(key) ((u32_t)(((key)>>33^(key)^(key)<<11)))
 
 static inline PURE CONST u32_t
-strhash(const char_t *s) {
+strhash(__const char_t *s) {
   u32_t h = (u32_t) *s;
   if (h) for (++s; *s; ++s) h = (h << 5) - h + (u32_t) *s;
   return h;

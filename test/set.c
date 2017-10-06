@@ -337,8 +337,8 @@ CUTEST(set, u64) {
 
 CUTEST(set, str) {
   u32_t out;
-  const char_t **str;
-  const char_t *strs[51] = {
+  __const char_t **str;
+  __const char_t *strs[51] = {
     "2lsDCacn6PYP7XbIWBDj",
     "rUPoh4tmafEbIxevHCSk",
     "VKaP4ZFpkOsedOYzvbQr",

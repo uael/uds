@@ -47,7 +47,7 @@
   MALLOC_FN, REALLOC_FN, FREE_FN) \
   typedef setof(TItem) ID##_t; \
   static FORCEINLINE void \
-  ID##_ctor(ID##_t *__restrict__ self) { \
+  ID##_ctor(ID##_t *__restrict self) { \
     *self = (ID##_t) { \
       .cap = 0, \
       .len = 0, \
@@ -58,21 +58,21 @@
     }; \
   } \
   static FORCEINLINE void \
-  ID##_dtor(ID##_t *__restrict__ self) { \
+  ID##_dtor(ID##_t *__restrict self) { \
     if (self && self->buckets) { \
       FREE_FN((void *)self->items); \
       FREE_FN(self->buckets); \
     } \
   } \
   static FORCEINLINE void \
-  ID##_clear(ID##_t *__restrict__ self) { \
+  ID##_clear(ID##_t *__restrict self) { \
     if (self && self->buckets) { \
       memset(self->buckets, BUCKET_EMPTY, self->cap); \
       self->len = self->occupieds = 0; \
     } \
   } \
   static FORCEINLINE bool_t \
-  ID##_get(const ID##_t *self, TItem item, u32_t *__restrict__ out) { \
+  ID##_get(__const ID##_t *self, TItem item, u32_t *__restrict out) { \
     if (self->cap) { \
       u32_t k, i, last, mask, step; \
       step = 0; \
@@ -94,7 +94,7 @@
     return false; \
   } \
   static FORCEINLINE ret_t \
-  ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
+  ID##_resize(ID##_t *__restrict self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
     new_buckets = nil; \
@@ -149,7 +149,7 @@
     return RET_SUCCESS; \
   } \
   static FORCEINLINE ret_t \
-  ID##_put(ID##_t *__restrict__ self, TItem item, u32_t *__restrict__ out) { \
+  ID##_put(ID##_t *__restrict self, TItem item, u32_t *__restrict out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
@@ -193,7 +193,7 @@
     return RET_FAILURE; /* Don't touch self->items[x] if populated */ \
   } \
   static FORCEINLINE bool_t \
-  ID##_del(ID##_t *__restrict__ self, u32_t x) { \
+  ID##_del(ID##_t *__restrict self, u32_t x) { \
     if (x != self->cap && bucket_ispopulated(self->buckets, x)) { \
       bucket_set_isdel_true(self->buckets, x); \
       --self->len; \
@@ -230,7 +230,7 @@
   SET_DEFINE(ID, u64_t, u64hash, u64eq)
 
 #define STR_SET_DEFINE(ID) \
-  SET_DEFINE(ID, const char_t *, strhash, streq)
+  SET_DEFINE(ID, __const char_t *, strhash, streq)
 
 I8_SET_DEFINE(i8set)
 U8_SET_DEFINE(u8set)

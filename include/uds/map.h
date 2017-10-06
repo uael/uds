@@ -64,7 +64,7 @@ enum bucket {
   HASH_FN, HASHEQ_FN, MALLOC_FN, REALLOC_FN, FREE_FN) \
   typedef mapof(TKey, TValue) ID##_t; \
   static FORCEINLINE void \
-  ID##_ctor(ID##_t *__restrict__ self) { \
+  ID##_ctor(ID##_t *__restrict self) { \
     *self = (ID##_t) { \
       .cap = 0, \
       .len = 0, \
@@ -76,7 +76,7 @@ enum bucket {
     }; \
   } \
   static FORCEINLINE void \
-  ID##_dtor(ID##_t *__restrict__ self) { \
+  ID##_dtor(ID##_t *__restrict self) { \
     if (self && self->buckets) { \
       FREE_FN((void *)self->keys); \
       FREE_FN(self->buckets); \
@@ -84,14 +84,14 @@ enum bucket {
     } \
   } \
   static FORCEINLINE void \
-  ID##_clear(ID##_t *__restrict__ self) { \
+  ID##_clear(ID##_t *__restrict self) { \
     if (self && self->buckets) { \
       memset(self->buckets, BUCKET_EMPTY, self->cap); \
       self->len = self->occupieds = 0; \
     } \
   } \
   static FORCEINLINE bool_t \
-  ID##_get(const ID##_t *self, TKey key, u32_t *__restrict__ out) { \
+  ID##_get(__const ID##_t *self, TKey key, u32_t *__restrict out) { \
     if (self->cap) { \
       u32_t k, i, last, mask, step; \
       step = 0; \
@@ -114,7 +114,7 @@ enum bucket {
     return false; \
   } \
   static FORCEINLINE ret_t \
-  ID##_resize(ID##_t *__restrict__ self, u32_t ensure) { \
+  ID##_resize(ID##_t *__restrict self, u32_t ensure) { \
     u8_t *new_buckets; \
     u32_t j; \
     new_buckets = nil; \
@@ -177,7 +177,7 @@ enum bucket {
     return RET_SUCCESS; \
   } \
   static FORCEINLINE ret_t \
-  ID##_put(ID##_t *__restrict__ self, TKey key, u32_t *__restrict__ out) { \
+  ID##_put(ID##_t *__restrict self, TKey key, u32_t *__restrict out) { \
     u32_t x; \
     if (self->occupieds >= self->upper_bound) { /* update the hash table */ \
       if (self->cap > (self->len << 1)) { \
@@ -221,7 +221,7 @@ enum bucket {
     return RET_FAILURE; /* Don't touch self->keys[x] if present and not deleted */ \
   } \
   static FORCEINLINE bool_t \
-  ID##_del(ID##_t *__restrict__ self, u32_t x) { \
+  ID##_del(ID##_t *__restrict self, u32_t x) { \
     if (x != self->cap && bucket_ispopulated(self->buckets, x)) { \
       bucket_set_isdel_true(self->buckets, x); \
       --self->len; \
@@ -260,6 +260,6 @@ enum bucket {
   MAP_DEFINE(ID, u64_t, TValue, u64cmp, TValue_CMP_FN, u64hash, u64eq)
 
 #define STR_MAP_DEFINE(ID, TValue, TValue_CMP_FN) \
-  MAP_DEFINE(ID, const char_t *, TValue, strcmp, TValue_CMP_FN, strhash, streq)
+  MAP_DEFINE(ID, __const char_t *, TValue, strcmp, TValue_CMP_FN, strhash, streq)
 
 #endif /* !__UDS_MAP_H */

@@ -43,7 +43,7 @@
 
 #define SEQ_DECL_ctor(SCOPE, ID, T, BITS) \
   SCOPE void \
-  ID##_ctor(ID##_t *__restrict__ self)
+  ID##_ctor(ID##_t *__restrict self)
 
 #define SEQ_IMPL_ctor(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_ctor(SCOPE, ID, T, BITS) { \
@@ -52,7 +52,7 @@
 
 #define SEQ_DECL_dtor(SCOPE, ID, T, BITS) \
   SCOPE void \
-  ID##_dtor(ID##_t *__restrict__ self)
+  ID##_dtor(ID##_t *__restrict self)
 
 #define SEQ_IMPL_dtor(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_dtor(SCOPE, ID, T, BITS) { \
@@ -66,7 +66,7 @@
 
 #define SEQ_DECL_cap(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_cap(ID##_t *__restrict__ self)
+  ID##_cap(ID##_t *__restrict self)
 
 #define SEQ_IMPL_cap(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_cap(SCOPE, ID, T, BITS) { \
@@ -75,7 +75,7 @@
 
 #define SEQ_DECL_size(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_size(ID##_t *__restrict__ self)
+  ID##_size(ID##_t *__restrict self)
 
 #define SEQ_IMPL_size(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_size(SCOPE, ID, T, BITS) { \
@@ -84,7 +84,7 @@
 
 #define SEQ_DECL_at(SCOPE, ID, T, BITS) \
   SCOPE T \
-  ID##_at(ID##_t *__restrict__ self, u##BITS##_t idx)
+  ID##_at(ID##_t *__restrict self, u##BITS##_t idx)
 
 #define SEQ_IMPL_at(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_at(SCOPE, ID, T, BITS) { \
@@ -93,7 +93,7 @@
 
 #define SEQ_DECL_offset(SCOPE, ID, T, BITS) \
   SCOPE T* \
-  ID##_offset(ID##_t *__restrict__ self, u##BITS##_t idx)
+  ID##_offset(ID##_t *__restrict self, u##BITS##_t idx)
 
 #define SEQ_IMPL_offset(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_offset(SCOPE, ID, T, BITS) { \
@@ -102,7 +102,7 @@
 
 #define SEQ_DECL_realloc(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_realloc(ID##_t *__restrict__ self, u##BITS##_t n)
+  ID##_realloc(ID##_t *__restrict self, u##BITS##_t n)
 
 #define SEQ_IMPL_realloc(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -120,7 +120,7 @@
 
 #define SEQ_DECL_ensure(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_ensure(ID##_t *__restrict__ self, u##BITS##_t n)
+  ID##_ensure(ID##_t *__restrict self, u##BITS##_t n)
 
 #define SEQ_IMPL_ensure(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_ensure(SCOPE, ID, T, BITS) { \
@@ -142,7 +142,7 @@
 
 #define SEQ_DECL_grow(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_grow(ID##_t *__restrict__ self, u##BITS##_t n)
+  ID##_grow(ID##_t *__restrict self, u##BITS##_t n)
 
 #define SEQ_IMPL_grow(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_grow(SCOPE, ID, T, BITS) { \
@@ -166,7 +166,7 @@
 
 #define SEQ_DECL_shrink(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_shrink(ID##_t *__restrict__ self, u##BITS##_t n)
+  ID##_shrink(ID##_t *__restrict self, u##BITS##_t n)
 
 #define SEQ_IMPL_shrink(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_shrink(SCOPE, ID, T, BITS) { \
@@ -179,7 +179,7 @@
 
 #define SEQ_DECL_trim(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_trim(ID##_t *__restrict__ self)
+  ID##_trim(ID##_t *__restrict self)
 
 #define SEQ_IMPL_trim(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_trim(SCOPE, ID, T, BITS) { \
@@ -192,7 +192,7 @@
 
 #define SEQ_DECL_insert(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_insert(ID##_t *__restrict__ self, const u##BITS##_t idx, T item)
+  ID##_insert(ID##_t *__restrict self, __const u##BITS##_t idx, T item)
 
 #define SEQ_IMPL_insert(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_insert(SCOPE, ID, T, BITS) { \
@@ -218,8 +218,8 @@
 
 #define SEQ_DECL_emplace(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_emplace(ID##_t *__restrict__ self, const u##BITS##_t idx, T *items, \
-    const u##BITS##_t n)
+  ID##_emplace(ID##_t *__restrict self, __const u##BITS##_t idx, T *items, \
+    __const u##BITS##_t n)
 
 #define SEQ_IMPL_emplace(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -245,8 +245,8 @@
 
 #define SEQ_DECL_nemplace(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_nemplace(ID##_t *__restrict__ self, const u##BITS##_t idx, T *items, \
-    const u##BITS##_t n)
+  ID##_nemplace(ID##_t *__restrict self, __const u##BITS##_t idx, T *items, \
+    __const u##BITS##_t n)
 
 #define SEQ_IMPL_nemplace(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -272,7 +272,7 @@
 
 #define SEQ_DECL_emplace_nt(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_emplace(ID##_t *__restrict__ self, const u##BITS##_t idx, T *items)
+  ID##_emplace(ID##_t *__restrict self, __const u##BITS##_t idx, T *items)
 
 #define SEQ_IMPL_emplace_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -288,7 +288,7 @@
     if (idx > ID##_size(self)) { \
       return RET_FAILURE; \
     } \
-    n = strlen((char_t const *) items); \
+    n = (u##BITS##_t) strlen((char_t __const *) items); \
     if ((ret = ID##_grow(self, n + 1)) > 0) { \
       return ret; \
     } \
@@ -306,7 +306,7 @@
 
 #define SEQ_DECL_push(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_push(ID##_t *__restrict__ self, T item)
+  ID##_push(ID##_t *__restrict self, T item)
 
 #define SEQ_IMPL_push(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_push(SCOPE, ID, T, BITS) { \
@@ -331,7 +331,7 @@
 
 #define SEQ_DECL_append(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_append(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+  ID##_append(ID##_t *__restrict self, T *items, __const u##BITS##_t n)
 
 #define SEQ_IMPL_append(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_append(SCOPE, ID, T, BITS) { \
@@ -349,7 +349,7 @@
 
 #define SEQ_DECL_nappend(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_nappend(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+  ID##_nappend(ID##_t *__restrict self, T *items, __const u##BITS##_t n)
 
 #define SEQ_IMPL_nappend(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_nappend(SCOPE, ID, T, BITS) { \
@@ -367,13 +367,13 @@
 
 #define SEQ_DECL_append_nt(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_append(ID##_t *__restrict__ self, T *items)
+  ID##_append(ID##_t *__restrict self, T *items)
 
 #define SEQ_IMPL_append_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_append_nt(SCOPE, ID, T, BITS) { \
     ret_t ret; \
     u##BITS##_t n; \
-    if ((n = strlen((char_t const *) items)) == 0) { \
+    if ((n = (u##BITS##_t) strlen((char_t __const *) items)) == 0) { \
       return RET_SUCCESS; \
     } \
     if ((ret = ID##_grow(self, n + 1)) > 0) { \
@@ -386,7 +386,7 @@
 
 #define SEQ_DECL_pop(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_pop(ID##_t *__restrict__ self, T *__restrict__ out)
+  ID##_pop(ID##_t *__restrict self, T *__restrict out)
 
 #define SEQ_IMPL_pop(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_pop(SCOPE, ID, T, BITS) { \
@@ -415,7 +415,7 @@
 
 #define SEQ_DECL_unshift(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_unshift(ID##_t *__restrict__ self, T item)
+  ID##_unshift(ID##_t *__restrict self, T item)
 
 #define SEQ_IMPL_unshift(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -435,7 +435,7 @@
 
 #define SEQ_DECL_prepend(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_prepend(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+  ID##_prepend(ID##_t *__restrict self, T *items, __const u##BITS##_t n)
 
 #define SEQ_IMPL_prepend(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -459,7 +459,7 @@
 
 #define SEQ_DECL_nprepend(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_nprepend(ID##_t *__restrict__ self, T *items, const u##BITS##_t n)
+  ID##_nprepend(ID##_t *__restrict self, T *items, __const u##BITS##_t n)
 
 #define SEQ_IMPL_nprepend(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -483,14 +483,14 @@
 
 #define SEQ_DECL_prepend_nt(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_prepend(ID##_t *__restrict__ self, T *items)
+  ID##_prepend(ID##_t *__restrict self, T *items)
 
 #define SEQ_IMPL_prepend_nt(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
   SEQ_DECL_prepend_nt(SCOPE, ID, T, BITS) { \
     ret_t ret; \
     u##BITS##_t n; \
-    n = strlen((char_t const *) items); \
+    n = (u##BITS##_t) strlen((char_t __const *) items); \
     if (n == 0) { \
       return RET_SUCCESS; \
     } \
@@ -512,7 +512,7 @@
 
 #define SEQ_DECL_shift(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_shift(ID##_t *__restrict__ self, T *__restrict__ out)
+  ID##_shift(ID##_t *__restrict self, T *__restrict out)
 
 #define SEQ_IMPL_shift(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_shift(SCOPE, ID, T, BITS) { \
@@ -536,7 +536,7 @@
 
 #define SEQ_DECL_remove(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_remove(ID##_t *__restrict__ self, const u##BITS##_t idx, T* out)
+  ID##_remove(ID##_t *__restrict self, __const u##BITS##_t idx, T* out)
 
 #define SEQ_IMPL_remove(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_remove(SCOPE, ID, T, BITS) { \
@@ -560,8 +560,8 @@
 
 #define SEQ_DECL_removen(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_removen(ID##_t *__restrict__ self, const u##BITS##_t idx, \
-    const u##BITS##_t n, T* out[])
+  ID##_removen(ID##_t *__restrict self, __const u##BITS##_t idx, \
+    __const u##BITS##_t n, T* out[])
 
 #define SEQ_IMPL_removen(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -586,7 +586,7 @@
 
 #define SEQ_DECL_erase(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_erase(ID##_t *__restrict__ self, T item)
+  ID##_erase(ID##_t *__restrict self, T item)
 
 #define SEQ_IMPL_erase(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_erase(SCOPE, ID, T, BITS) { \
@@ -614,7 +614,7 @@
 
 #define SEQ_DECL_erasen(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_erasen(ID##_t *__restrict__ self, T item, u##BITS##_t n)
+  ID##_erasen(ID##_t *__restrict self, T item, u##BITS##_t n)
 
 #define SEQ_IMPL_erasen(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_erasen(SCOPE, ID, T, BITS) { \
@@ -645,7 +645,7 @@
 
 #define SEQ_DECL_eraseonce(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_eraseonce(ID##_t *__restrict__ self, T item)
+  ID##_eraseonce(ID##_t *__restrict self, T item)
 
 #define SEQ_IMPL_eraseonce(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, \
   CMP) \
@@ -666,7 +666,7 @@
 
 #define SEQ_DECL_cpy(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_cpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src)
+  ID##_cpy(ID##_t *__restrict self, ID##_t *__restrict src)
 
 #define SEQ_IMPL_cpy(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_cpy(SCOPE, ID, T, BITS) { \
@@ -690,8 +690,8 @@
 
 #define SEQ_DECL_ncpy(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_ncpy(ID##_t *__restrict__ self, ID##_t *__restrict__ src, \
-    const u##BITS##_t n)
+  ID##_ncpy(ID##_t *__restrict self, ID##_t *__restrict src, \
+    __const u##BITS##_t n)
 
 #define SEQ_IMPL_ncpy(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_ncpy(SCOPE, ID, T, BITS) { \
@@ -715,7 +715,7 @@
 
 #define SEQ_DECL_has(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_has(ID##_t *__restrict__ self, T item, u##BITS##_t *out)
+  ID##_has(ID##_t *__restrict self, T item, u##BITS##_t *out)
 
 #define SEQ_IMPL_has(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_has(SCOPE, ID, T, BITS) { \
@@ -733,7 +733,7 @@
 
 #define SEQ_DECL_any(SCOPE, ID, T, BITS) \
   SCOPE bool_t \
-  ID##_any(ID##_t *__restrict__ self, bool_t (*cb)(T *, void *), void *data)
+  ID##_any(ID##_t *__restrict self, bool_t (*cb)(T *, void *), void *data)
 
 #define SEQ_IMPL_any(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_any(SCOPE, ID, T, BITS) { \
@@ -748,7 +748,7 @@
 
 #define SEQ_DECL_counteq(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_counteq(ID##_t *__restrict__ self, T item)
+  ID##_counteq(ID##_t *__restrict self, T item)
 
 #define SEQ_IMPL_counteq(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_counteq(SCOPE, ID, T, BITS) { \
@@ -763,7 +763,7 @@
 
 #define SEQ_DECL_count(SCOPE, ID, T, BITS) \
   SCOPE u##BITS##_t \
-  ID##_count(ID##_t *__restrict__ self, bool_t (*cb)(T *, void *), void *data)
+  ID##_count(ID##_t *__restrict self, bool_t (*cb)(T *, void *), void *data)
 
 #define SEQ_IMPL_count(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \
   SEQ_DECL_count(SCOPE, ID, T, BITS) { \
@@ -778,7 +778,7 @@
 
 #define SEQ_DECL_select(SCOPE, ID, T, BITS) \
   SCOPE ret_t \
-  ID##_select(ID##_t *__restrict__ self, ID##_t *__restrict__ dest, \
+  ID##_select(ID##_t *__restrict self, ID##_t *__restrict dest, \
     bool_t (*cb)(T *, void *), void *data)
 
 #define SEQ_IMPL_select(SCOPE, ID, T, BITS, CAP, LEN, BUF, REALLOC, FREE, CMP) \

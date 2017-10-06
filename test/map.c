@@ -346,8 +346,8 @@ CUTEST(map, u64) {
 
 CUTEST(map, str) {
   u32_t out;
-  const char_t **str;
-  const char_t *strs[51] = {
+  __const char_t **str;
+  __const char_t *strs[51] = {
     "2lsDCacn6PYP7XbIWBDj",
     "rUPoh4tmafEbIxevHCSk",
     "VKaP4ZFpkOsedOYzvbQr",

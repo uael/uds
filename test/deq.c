@@ -34,7 +34,7 @@ typedef struct {
   f64_t x, y;
 } point_t;
 
-i8_t point_cmp(const point_t a, const point_t b) {
+i8_t point_cmp(__const point_t a, __const point_t b) {
   return f64cmp(a.x, b.x) + f64cmp(a.y, b.y);
 }
 
